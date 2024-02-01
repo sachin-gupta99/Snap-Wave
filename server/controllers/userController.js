@@ -3,8 +3,12 @@ const bcrypt = require("bcryptjs");
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const usernameCheck = await User.findOne({ username: username });
+    const values = {
+      username: req.body.username.toString(),
+      email: req.body.email.toString(),
+      password: req.body.password.toString(),
+    };
+    const usernameCheck = await User.findOne({ username: values.username });
 
     if (usernameCheck) {
       return res.json({
@@ -13,7 +17,7 @@ exports.register = async (req, res) => {
       });
     }
 
-    const emailCheck = await User.findOne({ email });
+    const emailCheck = await User.findOne({ email: values.email });
     if (emailCheck) {
       return res.json({
         status: "failed",
@@ -22,7 +26,7 @@ exports.register = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(values.password, salt);
     const newUser = new User({
       username,
       email,
@@ -32,7 +36,7 @@ exports.register = async (req, res) => {
     delete newUser.password;
     res.json({
       status: "success",
-      message: "User registered successfully",
+      user: newUser,
     });
   } catch (error) {
     res.json({
