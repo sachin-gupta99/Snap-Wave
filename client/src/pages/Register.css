@@ -1,0 +1,82 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f2f2f2;
+  border-radius: 0.4rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.form-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  padding: 5% 0 0 0;
+}
+
+.form-heading img {
+  width: 20%;
+  height: 20%;
+}
+
+.form-heading span {
+  width: 80%;
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 5%;
+}
+
+.form-container form input {
+  width: 100%;
+  margin: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+}
+
+.form-container form button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 4%;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  background-color: #323232;
+  color: #fff;
+  cursor: pointer;
+}
+
+.form-container form button:hover {
+  background-color: #030303;
+}
+
+.form-container form span {
+  margin: 2% 0 0 2%;
+  font-size: 1rem;
+  color: #333;
+}
+
+.form-container form span a {
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
