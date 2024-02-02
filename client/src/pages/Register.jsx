@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { registerRoute } from "../utils/APIRoutes";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -25,6 +27,13 @@ const Register = () => {
     theme: "dark",
     progress: undefined,
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("chat-app-user"));
+    if (user) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -48,6 +57,8 @@ const Register = () => {
           password: "",
           confirmPassword: "",
         });
+        localStorage.setItem("chat-app-user", JSON.stringify(registeredUser.data.user));
+        navigate("/");
       } else {
         toast.error(registeredUser.data.message, toastOptions);
       }
@@ -83,7 +94,7 @@ const Register = () => {
       <div className="form-container">
         <div className="form-heading">
           <img src={Logo} alt="Logo" />
-          <span>Chat Application</span>
+          <span>Snap-Wave</span>
         </div>
         <form onSubmit={handleSubmit}>
           <input
@@ -132,7 +143,6 @@ const Register = () => {
           </span>
         </form>
       </div>
-      <ToastContainer />
     </>
   );
 };
