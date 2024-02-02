@@ -7,6 +7,7 @@ import { registerRoute } from "../utils/APIRoutes";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
+import { getAuthToken, setAuthToken } from "../utils/auth";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Register = () => {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("chat-app-user"));
+    const user = JSON.parse(getAuthToken());
     if (user) {
       navigate("/");
     }
@@ -57,7 +58,7 @@ const Register = () => {
           password: "",
           confirmPassword: "",
         });
-        localStorage.setItem("chat-app-user-token", registeredUser.data.token);
+        setAuthToken(registeredUser.data.token);
         navigate("/");
       } else {
         toast.error(registeredUser.data.message, toastOptions);
