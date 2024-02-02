@@ -8,6 +8,7 @@ import axios from "axios";
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../utils/APIRoutes";
 import "./SetAvatar.css";
+import { getAuthToken, setAuthToken } from "../utils/auth";
 
 const SetAvatar = () => {
   const AvatarAPI = "https://api.multiavatar.com/";
@@ -29,9 +30,7 @@ const SetAvatar = () => {
 
   const setProfilePicture = async () => {
     try {
-      const decodedToken = jwtDecode(
-        localStorage.getItem("chat-app-user-token")
-      );
+      const decodedToken = jwtDecode(getAuthToken());
       const response = await axios.post(
         `${setAvatarRoute}/${decodedToken._id}`,
         {
@@ -40,19 +39,14 @@ const SetAvatar = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem(
-              "chat-app-user-token"
-            )}`,
+            Authorization: `Bearer ${getAuthToken()}`,
           },
         }
       );
 
       if (response.data.status === "success") {
         toast.success("Profile picture set successfully", toastOptions);
-        localStorage.setItem(
-          "chat-app-user",
-          JSON.stringify(response.data.user)
-        );
+        setAuthToken(response.data.token);
         navigate("/");
       } else {
         toast.error("Error setting profile picture", toastOptions);
@@ -61,6 +55,13 @@ const SetAvatar = () => {
       toast.error("Error setting profile picture", toastOptions);
     }
   };
+
+  useEffect(() => {
+    const user = getAuthToken();
+    if (!user) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     try {
