@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
-import loader from "../assets/loader.gif";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+
+import loader from "../assets/loader.gif";
+import { setAvatarRoute } from "../utils/APIRoutes";
 import "./SetAvatar.css";
 
 const SetAvatar = () => {
@@ -25,7 +27,40 @@ const SetAvatar = () => {
     progress: undefined,
   };
 
-  const setProfilePicture = async () => {};
+  const setProfilePicture = async () => {
+    try {
+      const decodedToken = jwtDecode(
+        localStorage.getItem("chat-app-user-token")
+      );
+      const response = await axios.post(
+        `${setAvatarRoute}/${decodedToken._id}`,
+        {
+          avatar: avatars[selectedAvatar],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(
+              "chat-app-user-token"
+            )}`,
+          },
+        }
+      );
+
+      if (response.data.status === "success") {
+        toast.success("Profile picture set successfully", toastOptions);
+        localStorage.setItem(
+          "chat-app-user",
+          JSON.stringify(response.data.user)
+        );
+        navigate("/");
+      } else {
+        toast.error("Error setting profile picture", toastOptions);
+      }
+    } catch (err) {
+      toast.error("Error setting profile picture", toastOptions);
+    }
+  };
 
   useEffect(() => {
     try {
@@ -48,6 +83,7 @@ const SetAvatar = () => {
     } catch (error) {
       toast.error("Error fetching avatars", toastOptions);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
