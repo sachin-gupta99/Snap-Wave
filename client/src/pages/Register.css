@@ -18,7 +18,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 60%;
   padding: 5% 0 0 0;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .form-container form button {
-  margin-top: 10px;
+  /* margin-top: 10px;
   margin-bottom: 10px;
   width: 100%;
   padding: 4%;
@@ -62,11 +62,22 @@
   font-size: 1rem;
   background-color: #323232;
   color: #fff;
+  cursor: pointer; */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 4%;
+  font-size: 1.5rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
   cursor: pointer;
-}
-
-.form-container form button:hover {
-  background-color: #030303;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    background-color: rgb(208, 205, 205);
+    color: black;
+  }
 }
 
 .form-container form span {

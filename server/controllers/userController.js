@@ -28,8 +28,8 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(values.password, salt);
     const newUser = new User({
-      username,
-      email,
+      username: values.username,
+      email: values.email,
       password: hashedPassword,
     });
     await newUser.save();
@@ -37,6 +37,40 @@ exports.register = async (req, res) => {
     res.json({
       status: "success",
       user: newUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const values = {
+      username: req.body.username.toString(),
+      password: req.body.password.toString(),
+    };
+    const user = await User.findOne({ username: values.username });
+    if (!user) {
+      return res.json({
+        status: "failed",
+        message: "Invalid username",
+      });
+    }
+    const validPassword = await bcrypt.compare(values.password, user.password);
+    if (!validPassword) {
+      return res.json({
+        status: "failed",
+        message: "Invalid password",
+      });
+    }
+    delete user.password;
+    res.json({
+      status: "success",
+      user: user,
     });
   } catch (error) {
     res.json({

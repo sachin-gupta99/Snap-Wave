@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
+import SetAvatar from "./pages/SetAvatar";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
   {
@@ -22,12 +24,19 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/setAvatar",
+        element: <SetAvatar />,
+      }
     ],
   },
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return <>
+    <RouterProvider router={router} />
+    <ToastContainer />
+  </>
 };
 
 export default App;
