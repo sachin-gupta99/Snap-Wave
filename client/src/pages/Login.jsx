@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
 import { loginRoute } from "../utils/APIRoutes";
 import Logo from "../assets/logo.png";
 import "./Register.css";
@@ -52,10 +52,7 @@ const Login = () => {
           username: "",
           password: "",
         });
-        localStorage.setItem(
-          "chat-app-user",
-          JSON.stringify(registeredUser.data.user)
-        );
+        localStorage.setItem("chat-app-user-token", registeredUser.data.token);
         navigate("/");
       } else {
         toast.error(registeredUser.data.message, toastOptions);

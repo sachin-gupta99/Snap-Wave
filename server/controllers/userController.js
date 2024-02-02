@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
@@ -34,9 +35,11 @@ exports.register = async (req, res) => {
     });
     await newUser.save();
     delete newUser.password;
+    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET);
+
     res.json({
       status: "success",
-      user: newUser,
+      token,
     });
   } catch (error) {
     console.log(error);
@@ -68,9 +71,37 @@ exports.login = async (req, res) => {
       });
     }
     delete user.password;
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
     res.json({
       status: "success",
-      user: user,
+      token,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};
+
+exports.setAvatar = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const avatar = req.body.avatar;
+    const user = await User.findById({ _id: userId });
+    
+    if (!user) {
+      return res.json({
+        status: "failed",
+        message: "User not found",
+      });
+    }
+    user.avatarImage = avatar;
+    user.isAvatarImageSet = true;
+    await user.save();
+    res.json({
+      status: "success",
+      user,
     });
   } catch (error) {
     res.json({
