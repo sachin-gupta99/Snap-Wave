@@ -8,7 +8,7 @@ import axios from "axios";
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../utils/APIRoutes";
 import "./SetAvatar.css";
-import { getAuthToken, setAuthToken } from "../utils/auth";
+import { getAuthToken } from "../utils/auth";
 
 const SetAvatar = () => {
   const AvatarAPI = "https://api.multiavatar.com/";
@@ -46,7 +46,6 @@ const SetAvatar = () => {
 
       if (response.data.status === "success") {
         toast.success("Profile picture set successfully", toastOptions);
-        setAuthToken(response.data.token);
         navigate("/");
       } else {
         toast.error("Error setting profile picture", toastOptions);

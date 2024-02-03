@@ -7,6 +7,7 @@ import { loginRoute } from "../utils/APIRoutes";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
+import { getAuthToken } from "../utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("chat-app-user"));
+    const user = getAuthToken();
     if (user) {
       navigate("/");
     }

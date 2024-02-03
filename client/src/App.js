@@ -7,7 +7,7 @@ import Chat from "./pages/Chat";
 import SetAvatar from "./pages/SetAvatar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Chat />,
+        element: (
+          <ProtectedRoute>
+            <Chat />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",
@@ -28,17 +32,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/setAvatar",
-        element: <SetAvatar />,
-      }
+        element: (
+          <ProtectedRoute>
+            <SetAvatar />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
+  {
+    path: "*",
+    element: <div>Not Found</div>,
+  }
 ]);
 
 const App = () => {
-  return <>
-    <RouterProvider router={router} />
-    <ToastContainer />
-  </>
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 };
 
 export default App;

@@ -30,7 +30,7 @@ const Register = () => {
   };
 
   useEffect(() => {
-    const user = JSON.parse(getAuthToken());
+    const user = getAuthToken();
     if (user) {
       navigate("/");
     }
