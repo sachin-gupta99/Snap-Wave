@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { loginRoute } from "../utils/APIRoutes";
@@ -8,6 +8,7 @@ import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
 import { getAuthToken } from "../utils/auth";
+import { verifyTokenRoute } from "../utils/APIRoutes";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const user = getAuthToken();
-    if (user) {
+    const userToken = getAuthToken();
+    if (userToken) {
       navigate("/");
     }
   }, [navigate]);
@@ -112,3 +113,21 @@ const Login = () => {
 };
 
 export default Login;
+
+export const loader = async () => {
+  const token = getAuthToken();
+  const response = await axios.post(
+    verifyTokenRoute,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  if (response.data.status === "success") {
+    return redirect("/");
+  }
+  return null;
+};
