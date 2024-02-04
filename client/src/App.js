@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Login from "./pages/Login";
+import Login, { loader } from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
 import SetAvatar from "./pages/SetAvatar";
@@ -25,10 +25,12 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+        loader: loader,
       },
       {
         path: "/register",
         element: <Register />,
+        loader: loader,
       },
       {
         path: "/setAvatar",
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <div>Not Found</div>,
-  }
+  },
 ]);
 
 const App = () => {

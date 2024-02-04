@@ -2,6 +2,29 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+exports.verifyToken = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById({ _id: userId  });
+    if (!user) {
+      return res.json({
+        status: "failed",
+        message: "User not found",
+      });
+    }
+    delete user.password;
+    res.json({
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};
+
 exports.register = async (req, res) => {
   try {
     const values = {
