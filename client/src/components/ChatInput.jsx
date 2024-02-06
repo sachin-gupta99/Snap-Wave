@@ -5,7 +5,7 @@ import "./ChatInput.css";
 import { useState } from "react";
 import Picker from "emoji-picker-react";
 
-const ChatInput = () => {
+const ChatInput = ({ onSend }) => {
   const [message, setMessage] = useState("");
   const [emojiPicker, SetEmojiPicker] = useState(false);
 
@@ -16,6 +16,15 @@ const ChatInput = () => {
   const handleEmojiClick = (e) => {
     let emoji = e.emoji;
     setMessage(message + emoji);
+  };
+
+  const sendMsg = (e) => {
+    if (e.key === "Enter" || e.type === "click") {
+      if (message.trim().length > 0) {
+        onSend(message);
+        setMessage("");
+      }
+    }
   };
 
   return (
@@ -31,11 +40,12 @@ const ChatInput = () => {
           className="chat-message-input"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={sendMsg}
         />
       </div>
-      <div className="chat-send">
-        <IoMdSend />
-      </div>
+      <button className="chat-send">
+        <IoMdSend onClick={sendMsg} />
+      </button>
     </div>
   );
 };
