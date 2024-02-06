@@ -1,0 +1,78 @@
+.chat-input-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #494949;
+  border-radius: 0.4rem;
+  padding: 0.2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  width: 5%;
+  height: 100%;
+  cursor: pointer;
+  color: #fff;
+  svg {
+    width: 100%;
+  }
+  .epr-main {
+    width: 10%;
+  }
+  .EmojiPickerReact {
+    position: absolute;
+    top: 4.2rem;
+    left: 22rem;
+
+    background-color: #494949;
+    box-shadow: 0 5px 10px grey;
+    .epr-emoji-list {
+      background-color: #494949;
+      .epr-emoji-category {
+        background-color: #494949;
+        .epr-emoji-category-label {
+          background-color: #494949;
+        }
+      }
+    }
+    .epr-search-container {
+      input {
+        background-color: #494949;
+      }
+      /* background-color: #494949; */
+    }
+  }
+}
+
+.chat-message {
+  width: 90%;
+  .chat-message-input {
+    font-size: 1.2rem;
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 0.4rem;
+    height: 100%;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.chat-send {
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 2rem;
+  svg {
+    width: 100%;
+  }
+}
