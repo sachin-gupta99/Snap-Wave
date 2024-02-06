@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import "./Chat.css";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ import Contacts from "../components/Contacts";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
+import { io } from "socket.io-client";
+import { host } from "../utils/APIRoutes";
 
 const override1 = {
   position: "absolute",
@@ -33,6 +35,7 @@ const override3 = {
 };
 
 const Chat = () => {
+  const socket = useRef();
   const token = jwtDecode(getAuthToken());
   const currentUserId = token._id;
   const user = useMemo(() => jwtDecode(getAuthToken()), []);
@@ -98,6 +101,13 @@ const Chat = () => {
     };
     fetchUser();
   }, [navigate, user]);
+
+  useEffect(() => {
+    if (userData) {
+      socket.current = io(host);
+      socket.current.emit("add-user", userData._id);
+    }
+  }, [userData]);
 
   return (
     <Container>
@@ -175,7 +185,11 @@ const Chat = () => {
               {selectedIndex === undefined ? (
                 <Welcome username={userData.username} />
               ) : (
-                <ChatContainer currentChat={currentChat} />
+                <ChatContainer
+                  currentChat={currentChat}
+                  currentUser={userData}
+                  socket={socket}
+                />
               )}
             </>
           )}
@@ -192,6 +206,7 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   width: 100%;
+  overflow: scroll;
   .container {
     width: 85%;
     height: 85%;
