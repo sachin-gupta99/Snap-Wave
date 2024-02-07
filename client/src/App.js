@@ -5,9 +5,9 @@ import Login, { loader } from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
 import SetAvatar from "./pages/SetAvatar";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {

@@ -4,11 +4,11 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { loginRoute } from "../utils/APIRoutes";
+import { getAuthToken } from "../utils/auth";
+import { verifyTokenRoute } from "../utils/APIRoutes";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
-import { getAuthToken } from "../utils/auth";
-import { verifyTokenRoute } from "../utils/APIRoutes";
 
 const Login = () => {
   const navigate = useNavigate();

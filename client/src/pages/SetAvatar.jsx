@@ -7,8 +7,8 @@ import axios from "axios";
 
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../utils/APIRoutes";
-import "./SetAvatar.css";
 import { getAuthToken } from "../utils/auth";
+import "./SetAvatar.css";
 
 const SetAvatar = () => {
   const AvatarAPI = "https://api.multiavatar.com/";

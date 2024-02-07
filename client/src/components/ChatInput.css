@@ -1,20 +1,20 @@
 .chat-input-container {
-  display: flex;
   height: 100%;
   width: 100%;
-  background-color: #494949;
+  display: flex;
   border-radius: 0.4rem;
-  padding: 0.2rem;
+  padding: 0.3rem;
+  gap: 0.2rem;
   align-items: center;
   justify-content: space-between;
 }
 
 .chat-emoji {
+  width: 5%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  width: 5%;
   height: 100%;
   cursor: pointer;
   color: #fff;
@@ -44,7 +44,6 @@
       input {
         background-color: #494949;
       }
-      /* background-color: #494949; */
     }
   }
 }
@@ -52,12 +51,13 @@
 .chat-message {
   width: 90%;
   .chat-message-input {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.4rem;
     border: none;
     border-radius: 0.4rem;
-    height: 100%;
+    color: white;
+    background-color: transparent;
     &:focus {
       outline: none;
     }
@@ -73,7 +73,7 @@
   color: #fff;
   background-color: transparent;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   svg {
     width: 100%;
   }
