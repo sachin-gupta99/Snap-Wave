@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import styled from "styled-components";
-import "./Chat.css";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { io } from "socket.io-client";
+
 import { getAllUsersRoute, getUserRoute } from "../utils/APIRoutes";
 import { getAuthToken, removeAuthToken } from "../utils/auth";
-import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
 import Contacts from "../components/Contacts";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
-import { io } from "socket.io-client";
 import { host } from "../utils/APIRoutes";
+import "./Chat.css";
 
 const override1 = {
   position: "absolute",
@@ -110,8 +110,8 @@ const Chat = () => {
   }, [userData]);
 
   return (
-    <Container>
-      <div className="container">
+    <div className="chat-container-main">
+      <div className="container123">
         {/* Chat List part */}
         <div className="chat-list">
           {/* Contacts part */}
@@ -195,41 +195,8 @@ const Chat = () => {
           )}
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  overflow: scroll;
-  .container {
-    width: 85%;
-    height: 85%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    // margin: 0;
-    padding: 1.25rem;
-    transform: translate(-53%, -55%);
-    display: grid;
-    gap: 0.5rem;
-    grid-template-columns: 25% 75%;
-    align-items: start;
-    background-color: #f5f5f5;
-    box-shadow: 0px 0px 10px 0px #000000;
-    border-radius: 0.4rem;
-    @media screen and (min-width: 768px) and (max-width: 1024px) {
-      grid-template-columns: 30% 70%;
-    }
-    @media screen and (min-width: 320px) and (max-width: 767px) {
-      grid-template-columns: 100%;
-    }
-  }
-`;
 
 export default Chat;

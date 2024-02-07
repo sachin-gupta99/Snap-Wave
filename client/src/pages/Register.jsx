@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { registerRoute } from "../utils/APIRoutes";
+import { getAuthToken, setAuthToken } from "../utils/auth";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
-import { getAuthToken, setAuthToken } from "../utils/auth";
 
 const Register = () => {
   const navigate = useNavigate();

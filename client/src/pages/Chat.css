@@ -1,23 +1,42 @@
-.chat-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  background-color: #494949;
-  border-radius: 8px;
+.chat-container-main {
+  width: 80%;
+  height: 80%;
+  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   padding: 0.5rem;
-  
+  transform: translate(-50%, -50%);
+  display: flex;
+  background-color: #f5f5f5;
+  box-shadow: 0px 0px 10px 0px #000000;
+  border-radius: 0.4rem;
+  overflow: auto;
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    grid-template-columns: 30% 70%;
+  }
+  @media screen and (min-width: 320px) and (max-width: 767px) {
+    grid-template-columns: 100%;
+  }
+  .container123 {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
 }
 
 .chat-list {
+  width: 30%;
   background-color: rgb(255, 166, 166);
   padding: 0.4rem;
   border-right: 1px solid #000000;
   border-radius: 0.4rem;
   height: 100%;
-  overflow-y: auto;
+  overflow: auto;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   justify-content: space-between;
   @media screen and (min-width: 320px) and (max-width: 767px) {
     border-right: none;
@@ -25,27 +44,39 @@
   }
 }
 
+.chat-box {
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  background-color: #494949;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
 .all-contacts {
-  height: 88%;
-  overflow: auto;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.3rem;
+  gap: 0.3rem;
   border-radius: 0.4rem;
   overflow: auto;
-  padding-bottom: 0;
+  box-shadow: 0 0 0.3rem 0.01rem rgba(0, 0, 0, 0.7);
 }
 
 .self_details__container {
+  height: fit-content;
   display: grid;
   grid-template-columns: auto auto;
   padding: 0.2rem;
-  padding-bottom: 0;
   align-items: center;
   justify-content: center;
   background-color: azure;
   gap: 0.2rem 0.5rem;
-  min-height: 2rem;
-  border: 0.1rem solid #000000;
   border-radius: 0.4rem;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.3rem 0.01rem rgba(0, 0, 0, 0.7)
 }
 
 .self_details__avatar {
@@ -78,7 +109,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 0.3rem;
+  width: 0.2rem;
 }
 
 /* Track */

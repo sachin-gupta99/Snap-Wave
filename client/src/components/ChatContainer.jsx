@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import sampleAvatar from "../assets/sample-avatar.jpg";
-import "./ChatContainer.css";
-import ChatInput from "./ChatInput";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import sampleAvatar from "../assets/sample-avatar.jpg";
+import ChatInput from "./ChatInput";
 import { getMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
 import { getAuthToken } from "../utils/auth";
-import {v4 as uuidv4} from "uuid";
+import classes from "./ChatContainer.module.css";
+import cx from "classnames";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
@@ -65,7 +66,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         });
       });
     }
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
@@ -76,9 +77,9 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   }, [messages]);
 
   return (
-    <div className="chat-container">
-      <div className="chat-header">
-        <div className="chat-avatar">
+    <div className={classes["chat-container"]}>
+      <div className={classes["chat-header"]}>
+        <div className={classes["chat-avatar"]}>
           <img
             src={
               currentChat.avatarImage
@@ -88,31 +89,33 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
             alt="avatar"
           />
         </div>
-        <div className="chat-user-details">
-          <div className="chat-username">{currentChat.username}</div>
-          <div className="chat-status" style={{ color: "green" }}>
+        <div className={classes["chat-user-details"]}>
+          <div className={classes["chat-username"]}>{currentChat.username}</div>
+          <div className={classes["chat-status"]} style={{ color: "green" }}>
             Online
           </div>
         </div>
       </div>
-      <div className="chat-messages">
-        {messages.length === 0 ? (
-          <div className="no-messages">No messages</div>
-        ) : (
-          messages.map((msg, index) => (
-            <div key={uuidv4()} className="message" ref={scrollRef}>
-              <div
-                className={`message-content ${
-                  msg.fromSelf ? "sent" : "receive"
-                }`}
-              >
-                {msg.message}
+      <div className={classes["chat-messages"]}>
+        <div className={classes["message-container"]}>
+          {messages.length === 0 ? (
+            <div className={classes["no-messages"]}>No messages</div>
+          ) : (
+            messages.map((msg) => (
+              <div key={uuidv4()} className={classes.message} ref={scrollRef}>
+                <div
+                  className={cx(classes["message-content"], classes[`${
+                    msg.fromSelf ? "sent" : "receive"
+                  }`])}
+                >
+                  {msg.message}
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
-      <div className="chat-input">
+      <div className={classes["chat-input"]}>
         <ChatInput onSend={handleSendMsg} />
       </div>
     </div>

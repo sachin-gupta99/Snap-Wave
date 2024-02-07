@@ -5,6 +5,7 @@ require("dotenv").config();
 const socket = require("socket.io");
 const userRoutes = require("./routes/userRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -12,7 +13,8 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
 
 let server;
@@ -36,7 +38,7 @@ start();
 
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true,
   },
 });
