@@ -63,12 +63,15 @@ const SetAvatar = () => {
   }, [navigate]);
 
   useEffect(() => {
+    const crypto = window.crypto || window.Crypto;
+    const array = new Uint32Array(1);
+
     try {
       const fetchAvatars = async () => {
         const tempAvatars = [];
         for (let i = 0; i < 5; i++) {
           const image = await axios.get(
-            `${AvatarAPI}${Math.round(Math.random() * 1000)}?apikey=${
+            `${AvatarAPI}${crypto.getRandomValues(array)}?apikey=${
               process.env.MULTIAVATAR_API_KEY
             }`
           );
