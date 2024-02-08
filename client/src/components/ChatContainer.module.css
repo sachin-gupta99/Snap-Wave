@@ -37,12 +37,12 @@
     align-items: flex-start;
     margin-left: 0.5rem;
     .chat-username {
-      font-size: 1.1vw;
+      font-size: 1.1rem;
       font-weight: 600;
       color: #fff;
     }
     .chat-status {
-      font-size: 0.8vw;
+      font-size: 0.8rem;
       color: #fff;
     }
   }
