@@ -8,20 +8,18 @@ import SetAvatar from "./pages/SetAvatar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
     id: "root",
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
     children: [
-      {
-        index: true,
-        element: (
-          <ProtectedRoute>
-            <Chat />
-          </ProtectedRoute>
-        ),
-      },
       {
         path: "/chat",
         element: (
@@ -29,16 +27,6 @@ const router = createBrowserRouter([
             <Chat />
           </ProtectedRoute>
         ),
-      },
-      {
-        path: "/login",
-        element: <Login />,
-        loader: loader,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-        loader: loader,
       },
       {
         path: "/setAvatar",
@@ -49,6 +37,16 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    loader: loader,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+    loader: loader,
   },
   {
     path: "*",

@@ -1,0 +1,68 @@
+/* FILEPATH: /c:/Users/sachi/Documents/GitHub/Snap-Wave/client/src/components/Navbar.css */
+
+.navbar {
+  position: relative;
+  width: 100%;
+  background-color: #a8a8a8;
+  padding: 1.5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand a {
+  text-decoration: none;
+  font-size: 20px;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+}
+
+.navbar-brand a,
+.navbar-brand a:visited,
+.navbar-brand a:active,
+.navbar-brand a:hover {
+  color: blue;
+  text-decoration: none;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+}
+
+.navbar-menu li {
+  margin-right: 10px;
+}
+
+.navbar-menu li a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  padding: 5px;
+}
+
+.navbar-menu li a:hover,
+.navbar-menu li a.active,
+.navbar-menu li a:active {
+  color: #fff;
+}
+
+/* .navbar-menu li a.active {
+  background-color: #333;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+} */
+/* 
+.list a:hover,
+.list a:active,
+.list a.active {
+  background-color: var(--color-primary-600);
+} */
