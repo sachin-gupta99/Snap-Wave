@@ -23,7 +23,8 @@ exports.addMessage = async (req, res) => {
 
 exports.getAllMessages = async (req, res) => {
   try {
-    const { from, to } = req.body;
+    const from = req.body.from.toString();
+    const to = req.body.to.toString();
     const messages = await Message.find({
       users: {
         $all: [from, to],
