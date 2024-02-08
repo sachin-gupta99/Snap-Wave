@@ -75,14 +75,16 @@ const SetAvatar = () => {
               process.env.MULTIAVATAR_API_KEY
             }`
           );
-          const buffer = new Buffer(image.data).toString("base64");
+          const buffer = Buffer.from(image.data).toString("base64");
           tempAvatars.push(buffer);
         }
 
         setAvatars(tempAvatars);
         setLoading(false);
       };
-      fetchAvatars();
+      (async () => {
+        await fetchAvatars();
+      })();
     } catch (error) {
       toast.error("Error fetching avatars", toastOptions);
     }
@@ -113,6 +115,12 @@ const SetAvatar = () => {
                     src={`data:image/svg+xml;base64,${avatar}`}
                     alt="avatar"
                     onClick={() => setSelectedAvatar(index)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        setSelectedAvatar(index);
+                      }
+                    }}
+                    tabIndex={0}
                   />
                 </div>
               );
