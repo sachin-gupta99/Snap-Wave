@@ -18,7 +18,7 @@ const Navbar = () => {
         <div className={classes["navbar-brand"]}>
           <NavLink to="/">
             <img src={logo} alt="logo" />
-            Snap-Wave
+            <span>Snap-Wave</span>
           </NavLink>
         </div>
         <ul id="nav-mobile" className={classes["navbar-menu"]}>

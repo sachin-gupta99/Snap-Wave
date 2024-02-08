@@ -8,8 +8,15 @@ const messageRoutes = require("./routes/messageRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
+app.disable("x-powered-by");
 
-app.use(cors());
+let corsOptions = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
