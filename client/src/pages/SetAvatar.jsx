@@ -66,8 +66,8 @@ const SetAvatar = () => {
     const crypto = window.crypto || window.Crypto;
     const array = new Uint32Array(1);
 
-    try {
-      const fetchAvatars = async () => {
+    const fetchAvatars = async () => {
+      try {
         const tempAvatars = [];
         for (let i = 0; i < 5; i++) {
           const image = await axios.get(
@@ -81,13 +81,13 @@ const SetAvatar = () => {
 
         setAvatars(tempAvatars);
         setLoading(false);
-      };
-      (async () => {
-        await fetchAvatars();
-      })();
-    } catch (error) {
-      toast.error("Error fetching avatars", toastOptions);
-    }
+      } catch (error) {
+        toast.error("Error fetching avatars", toastOptions);
+      }
+    };
+
+    fetchAvatars();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
