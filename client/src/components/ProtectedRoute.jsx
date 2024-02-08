@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAuthToken, removeAuthToken } from "../utils/auth";
+import { getAuthToken, removeAuthToken } from "../utils/utility";
 import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { verifyTokenRoute } from "../utils/APIRoutes";

@@ -4,9 +4,12 @@ import axios from "axios";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import ChatInput from "./ChatInput";
 import { getMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
-import { getAuthToken } from "../utils/auth";
+import { getAuthToken } from "../utils/utility";
 import classes from "./ChatContainer.module.css";
 import cx from "classnames";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toastOptions } from "../utils/utility";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
@@ -32,7 +35,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   }, [currentChat, currentUser]);
 
   const handleSendMsg = async (msg) => {
-    await axios.post(
+    const sendingMsg = await axios.post(
       sendMessageRoute,
       {
         from: currentUser._id,
@@ -46,15 +49,20 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         },
       }
     );
-    socket.current.emit("send-msg", {
-      to: currentChat._id,
-      from: currentUser._id,
-      message: msg,
-    });
 
-    const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg });
-    setMessages(msgs);
+    if (sendingMsg.data.status === "success") {
+      socket.current.emit("send-msg", {
+        to: currentChat._id,
+        from: currentUser._id,
+        message: msg,
+      });
+
+      const msgs = [...messages];
+      msgs.push({ fromSelf: true, message: msg });
+      setMessages(msgs);
+    } else {
+      toast.error("Error sending message. Please logout and sign in again", toastOptions);
+    }
   };
 
   useEffect(() => {
@@ -104,9 +112,10 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
             messages.map((msg) => (
               <div key={uuidv4()} className={classes.message} ref={scrollRef}>
                 <div
-                  className={cx(classes["message-content"], classes[`${
-                    msg.fromSelf ? "sent" : "receive"
-                  }`])}
+                  className={cx(
+                    classes["message-content"],
+                    classes[`${msg.fromSelf ? "sent" : "receive"}`]
+                  )}
                 >
                   {msg.message}
                 </div>

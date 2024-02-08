@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { registerRoute } from "../utils/APIRoutes";
-import { getAuthToken, setAuthToken } from "../utils/auth";
+import { getAuthToken, setAuthToken } from "../utils/utility";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";

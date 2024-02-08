@@ -7,7 +7,7 @@ import axios from "axios";
 
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../utils/APIRoutes";
-import { getAuthToken } from "../utils/auth";
+import { getAuthToken } from "../utils/utility";
 import "./SetAvatar.css";
 
 const SetAvatar = () => {

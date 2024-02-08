@@ -9,3 +9,14 @@ export const removeAuthToken = () => {
 export const getAuthToken = () => {
   return localStorage.getItem("chat-app-user-token");
 };
+
+export const toastOptions = {
+  position: "top-center",
+  autoClose: 3000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "dark",
+  progress: undefined,
+};
