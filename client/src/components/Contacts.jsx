@@ -1,6 +1,7 @@
 import React from "react";
 import sampleAvatar from "../assets/sample-avatar.jpg";
-import "./Contacts.css";
+import classes from "./Contacts.module.css";
+import cx from "classnames";
 
 const Contacts = ({ index, contact, onClick, className }) => {
   const handleClick = () => {
@@ -9,7 +10,7 @@ const Contacts = ({ index, contact, onClick, className }) => {
   return (
     <div
       onClick={() => handleClick()}
-      className={`contact-container ${className}`}
+      className={cx(classes["contact-container"], classes[`${className}`])}
     >
       <img
         src={
@@ -18,11 +19,11 @@ const Contacts = ({ index, contact, onClick, className }) => {
             : sampleAvatar
         }
         alt="avatar"
-        className="avatar"
+        className={classes.avatar}
       />
-      <div className="contact__details">
-        <h3 className="contact__username">{contact.username}</h3>
-        <p className="contact__status"></p>
+      <div className={classes["contact__details"]}>
+        <h3 className={classes["contact__username"]}>{contact.username}</h3>
+        <p className={classes["contact__status"]}></p>
       </div>
     </div>
   );

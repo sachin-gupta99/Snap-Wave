@@ -4,8 +4,9 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { loginRoute } from "../utils/APIRoutes";
-import { getAuthToken } from "../utils/auth";
+import { getAuthToken } from "../utils/utility";
 import { verifyTokenRoute } from "../utils/APIRoutes";
+import { toastOptions } from "../utils/utility";
 import Logo from "../assets/logo.png";
 import "./Register.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,17 +17,6 @@ const Login = () => {
     username: "",
     password: "",
   });
-
-  const toastOptions = {
-    position: "top-center",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-    progress: undefined,
-  };
 
   useEffect(() => {
     const userToken = getAuthToken();

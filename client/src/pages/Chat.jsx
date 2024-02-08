@@ -5,7 +5,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 
 import { getAllUsersRoute, getUserRoute } from "../utils/APIRoutes";
-import { getAuthToken, removeAuthToken } from "../utils/auth";
+import { getAuthToken, removeAuthToken } from "../utils/utility";
 import BeatLoader from "react-spinners/BeatLoader";
 import Contacts from "../components/Contacts";
 import sampleAvatar from "../assets/sample-avatar.jpg";
@@ -111,7 +111,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container-main">
-      <div className="container123">
+      <div className="chat-subcontainer">
         {/* Chat List part */}
         <div className="chat-list">
           {/* Contacts part */}

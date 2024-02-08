@@ -1,0 +1,13 @@
+.welcome__container {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.welcome__container img {
+  width: 50%;
+  height: 50%;
+}
