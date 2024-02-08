@@ -24,11 +24,21 @@
     padding: 0.4rem;
     border-radius: 5rem;
     display: flex;
+    cursor: pointer;
     justify-content: center;
     align-items: center;
     transition: 0.5s ease-in-out;
+
     img {
       height: 6rem;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        transform: scale(1.1);
+      }
+      &:focus {
+        outline: none;
+        transform: scale(1.1);
+      }
     }
   }
   .selected {

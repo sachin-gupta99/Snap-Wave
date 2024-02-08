@@ -7,10 +7,19 @@ const Contacts = ({ index, contact, onClick, className }) => {
   const handleClick = () => {
     onClick(index);
   };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   return (
     <div
-      onClick={() => handleClick()}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
       className={cx(classes["contact-container"], classes[`${className}`])}
+      tabIndex={0} // to make the div focusable
     >
       <img
         src={
