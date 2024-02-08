@@ -34,11 +34,11 @@ const ProtectedRoute = ({ children }) => {
         );
         if (response.data.status !== "success") {
           removeAuthToken();
-          return navigate("/login");
+          return navigate("/auth?mode=login");
         }
         setLoading(false);
       } catch (err) {
-        redirect("/login");
+        redirect("/auth?mode=login");
         setLoading(false);
       }
     };
