@@ -2,6 +2,7 @@ import React from "react";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import classes from "./Contacts.module.css";
 import cx from "classnames";
+import PropTypes from "prop-types";
 
 const Contacts = ({ index, contact, onClick, className }) => {
   const handleClick = () => {
@@ -9,7 +10,7 @@ const Contacts = ({ index, contact, onClick, className }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleClick();
     }
   };
@@ -20,6 +21,7 @@ const Contacts = ({ index, contact, onClick, className }) => {
       onKeyDown={handleKeyDown}
       className={cx(classes["contact-container"], classes[`${className}`])}
       tabIndex={0} // to make the div focusable
+      role="button" 
     >
       <img
         src={
@@ -39,3 +41,14 @@ const Contacts = ({ index, contact, onClick, className }) => {
 };
 
 export default Contacts;
+
+Contacts.propTypes = {
+  index: PropTypes.number.isRequired,
+  contact: PropTypes.shape({
+    _id: PropTypes.string,
+    avatarImage: PropTypes.string,
+    username: PropTypes.string,
+  }).isRequired,
+  onClick: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
