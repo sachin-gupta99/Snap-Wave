@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { BsEmojiSmile } from "react-icons/bs";
 import classes from "./ChatInput.module.css";
-import { useState } from "react";
 import Picker from "emoji-picker-react";
+import PropTypes from "prop-types";
 import "./EmojiPicker.css";
 
 const ChatInput = ({ onSend }) => {
   const [message, setMessage] = useState("");
-  const [emojiPicker, SetEmojiPicker] = useState(false);
+  
+  const [emojiPicker, setEmojiPicker] = useState(false);
 
   const handleEmojiPicker = () => {
-    SetEmojiPicker(!emojiPicker);
+    setEmojiPicker(!emojiPicker);
   };
 
   const handleEmojiClick = (e) => {
@@ -52,3 +53,7 @@ const ChatInput = ({ onSend }) => {
 };
 
 export default ChatInput;
+
+ChatInput.propTypes = {
+  onSend: PropTypes.func.isRequired,
+};

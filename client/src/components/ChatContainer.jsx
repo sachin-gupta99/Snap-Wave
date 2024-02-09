@@ -150,6 +150,7 @@ ChatContainer.propTypes = {
   socket: PropTypes.shape({
     current: PropTypes.shape({
       emit: PropTypes.func,
+      on: PropTypes.func,
     }),
   }).isRequired,
 };
