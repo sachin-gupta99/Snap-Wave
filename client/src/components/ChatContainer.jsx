@@ -4,12 +4,12 @@ import axios from "axios";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import ChatInput from "./ChatInput";
 import { getMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
-import { getAuthToken } from "../utils/utility";
+import { getAuthToken, toastOptions } from "../utils/utility";
 import classes from "./ChatContainer.module.css";
 import cx from "classnames";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 import "react-toastify/dist/ReactToastify.css";
-import { toastOptions } from "../utils/utility";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
@@ -37,6 +37,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const handleSendMsg = async (msg) => {
     const sendingMsg = await axios.post(
       sendMessageRoute,
+      
       {
         from: currentUser._id,
         to: currentChat._id,
@@ -132,3 +133,23 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
 };
 
 export default ChatContainer;
+
+
+ChatContainer.propTypes = {
+  currentChat: PropTypes.shape({
+    _id: PropTypes.string,
+    avatarImage: PropTypes.string,
+    username: PropTypes.string,
+  }).isRequired,
+  currentUser: PropTypes.shape({
+    _id: PropTypes.string,
+    avatarImage: PropTypes.string,
+    username: PropTypes.string,
+  }).isRequired,
+
+  socket: PropTypes.shape({
+    current: PropTypes.shape({
+      emit: PropTypes.func,
+    }),
+  }).isRequired,
+};

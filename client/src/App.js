@@ -1,14 +1,13 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { LoginLoader } from "./pages/Auth";
+import AuthPage, { LoginLoader } from "./pages/Auth";
 import Chat from "./pages/Chat";
 import SetAvatar from "./pages/SetAvatar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
-import AuthPage from "./pages/Auth";
 
 const router = createBrowserRouter([
   {
