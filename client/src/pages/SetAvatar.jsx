@@ -109,7 +109,6 @@ const SetAvatar = () => {
                         setSelectedAvatar(index);
                       }
                     }}
-                    tabIndex={0}
                   />
                 </div>
               );

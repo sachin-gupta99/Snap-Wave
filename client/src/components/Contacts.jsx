@@ -16,12 +16,11 @@ const Contacts = ({ index, contact, onClick, className }) => {
   };
 
   return (
-    <div
+    <button
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cx(classes["contact-container"], classes[`${className}`])}
       tabIndex={0} // to make the div focusable
-      role="button" 
     >
       <img
         src={
@@ -36,7 +35,7 @@ const Contacts = ({ index, contact, onClick, className }) => {
         <h3 className={classes["contact__username"]}>{contact.username}</h3>
         <p className={classes["contact__status"]}></p>
       </div>
-    </div>
+    </button>
   );
 };
 
