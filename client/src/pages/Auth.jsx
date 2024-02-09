@@ -136,73 +136,69 @@ const AuthPage = () => {
   };
 
   return (
-    <>
-      <div className="form-container">
-        <div className="form-heading">
-          <img src={Logo} alt="Logo" />
-          <span>Snap-Wave</span>
-        </div>
-        <form onSubmit={handleSubmit}>
+    <div className="form-container">
+      <div className="form-heading">
+        <img src={Logo} alt="Logo" />
+        <span>Snap-Wave</span>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={values.username}
+          placeholder="Username"
+          title="Enter you Username"
+          onChange={handleChange}
+          required
+        />
+        {mode === "register" && (
           <input
             type="text"
-            id="username"
-            name="username"
-            value={values.username}
-            placeholder="Username"
-            title="Enter you Username"
+            id="email"
+            name="email"
+            value={values.email}
+            placeholder="Email"
+            title="Enter you Email"
             onChange={handleChange}
             required
           />
-          {mode === "register" && (
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={values.email}
-              placeholder="Email"
-              title="Enter you Email"
-              onChange={handleChange}
-              required
-            />
-          )}
+        )}
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={values.password}
+          placeholder="Password"
+          title="Enter you Password"
+          onChange={handleChange}
+          required
+        />
+        {mode === "register" && (
           <input
             type="password"
-            id="password"
-            name="password"
-            value={values.password}
-            placeholder="Password"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={values.confirmPassword}
+            placeholder="Confirm Password"
             title="Enter you Password"
             onChange={handleChange}
             required
           />
-          {mode === "register" && (
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={values.confirmPassword}
-              placeholder="Confirm Password"
-              title="Enter you Password"
-              onChange={handleChange}
-              required
-            />
-          )}
-          <button type="submit">
-            {mode === "login" ? "Login" : "Register"}
-          </button>
-          <span>
-            {mode === "login"
-              ? "Don't have an account? "
-              : "Already have an account? "}
-            <Link
-              to={mode === "login" ? "/auth?mode=register" : "/auth?mode=login"}
-            >
-              {mode === "login" ? "Register" : "Login"}
-            </Link>
-          </span>
-        </form>
-      </div>
-    </>
+        )}
+        <button type="submit">{mode === "login" ? "Login" : "Register"}</button>
+        <span>
+          {mode === "login"
+            ? "Don't have an account? "
+            : "Already have an account? "}
+          <Link
+            to={mode === "login" ? "/auth?mode=register" : "/auth?mode=login"}
+          >
+            {mode === "login" ? "Register" : "Login"}
+          </Link>
+        </span>
+      </form>
+    </div>
   );
 };
 
