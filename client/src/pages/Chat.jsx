@@ -4,14 +4,13 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-import { getAllUsersRoute, getUserRoute } from "../utils/APIRoutes";
+import { getAllUsersRoute, getUserRoute, host } from "../utils/APIRoutes";
 import { getAuthToken, removeAuthToken } from "../utils/utility";
 import BeatLoader from "react-spinners/BeatLoader";
 import Contacts from "../components/Contacts";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
-import { host } from "../utils/APIRoutes";
 import "./Chat.css";
 
 const override1 = {
@@ -127,7 +126,7 @@ const Chat = () => {
             ) : (
               contacts.map((contact, index) => (
                 <Contacts
-                  key={index}
+                  key={contact._id}
                   contact={contact}
                   index={index}
                   className={index === selectedIndex ? "selected" : ""}

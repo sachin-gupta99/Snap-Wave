@@ -4,6 +4,7 @@ import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { verifyTokenRoute } from "../utils/APIRoutes";
 import BeatLoader from "react-spinners/BeatLoader";
+import PropTypes from "prop-types";
 
 const override = {
   position: "absolute",
@@ -59,3 +60,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node,
+};

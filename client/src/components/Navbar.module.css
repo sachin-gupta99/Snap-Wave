@@ -1,5 +1,3 @@
-/* FILEPATH: /c:/Users/sachi/Documents/GitHub/Snap-Wave/client/src/components/Navbar.css */
-
 .navbar {
   position: relative;
   width: 100%;
@@ -55,15 +53,3 @@
 .navbar-menu li a:active {
   color: #fff;
 }
-
-/* .navbar-menu li a.active {
-  background-color: #333;
-  border-radius: 0.4rem;
-  padding: 0.5rem;
-} */
-/* 
-.list a:hover,
-.list a:active,
-.list a.active {
-  background-color: var(--color-primary-600);
-} */

@@ -7,7 +7,7 @@ import axios from "axios";
 
 import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../utils/APIRoutes";
-import { getAuthToken } from "../utils/utility";
+import { getAuthToken, toastOptions } from "../utils/utility";
 import "./SetAvatar.css";
 
 const SetAvatar = () => {
@@ -16,17 +16,6 @@ const SetAvatar = () => {
   const [avatars, setAvatars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState();
-
-  const toastOptions = {
-    position: "top-center",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-    progress: undefined,
-  };
 
   const setProfilePicture = async () => {
     try {
