@@ -75,3 +75,31 @@ exports.getUser = async (req, res) => {
     });
   }
 };
+
+exports.getUserByEmail = async (req, res) => {
+  console.log(req.params);
+  try {
+    const email = req.params.email;
+    const user = await User.findOne({ email }).select([
+      "email",
+      "username",
+      "avatarImage",
+      "_id",
+    ]);
+    if (!user) {
+      return res.json({
+        status: "failed",
+        message: "User not found",
+      });
+    }
+    res.json({
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};

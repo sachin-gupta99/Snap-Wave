@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
+import AddContact from "./pages/AddContact";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Chat />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/add-contact",
+        element: (
+          <ProtectedRoute>
+            <AddContact />
           </ProtectedRoute>
         ),
       },

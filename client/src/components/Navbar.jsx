@@ -32,6 +32,16 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
+            to="/add-contact"
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            Add Contact
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
             to="/setAvatar"
             className={({ isActive }) =>
               isActive ? classes.active : undefined
