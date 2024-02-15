@@ -7,3 +7,4 @@ export const getAllUsersRoute = `${host}/api/user/users`;
 export const getUserRoute = `${host}/api/user/user`;
 export const sendMessageRoute = `${host}/api/message/send-message`;
 export const getMessagesRoute = `${host}/api/message/get-messages`;
+export const logoutRoute = `${host}/api/auth/logout`;

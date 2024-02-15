@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AuthPage, { LoginLoader } from "./pages/Auth";
@@ -10,59 +10,55 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import AddContact from "./pages/AddContact";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    id: "root",
-    element: (
-      <ProtectedRoute>
-        <Home />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "/chat",
-        element: (
-          <ProtectedRoute>
-            <Chat />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/add-contact",
-        element: (
-          <ProtectedRoute>
-            <AddContact />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/setAvatar",
-        element: (
-          <ProtectedRoute>
-            <SetAvatar />
-          </ProtectedRoute>
-        ),
-      },
-    ],
-  },
-  {
-    path: "/auth", // /auth?mode=login or /auth?mode=register
-    element: <AuthPage />,
-    loader: LoginLoader,
-  },
-  // {
-  //   path: "/auth?mode=register",
-  //   element: <AuthPage />,
-  //   loader: LoginLoader,
-  // },
-  {
-    path: "*",
-    element: <div>Not Found</div>,
-  },
-]);
-
 const App = () => {
+  const socket = useRef();
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      id: "root",
+      element: (
+        <ProtectedRoute>
+          <Home socket={socket}/>
+        </ProtectedRoute>
+      ),
+      children: [
+        {
+          path: "/chat",
+          element: (
+            <ProtectedRoute>
+              <Chat socket={socket} />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/add-contact",
+          element: (
+            <ProtectedRoute>
+              <AddContact />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/setAvatar",
+          element: (
+            <ProtectedRoute>
+              <SetAvatar />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/auth", // /auth?mode=login or /auth?mode=register
+      element: <AuthPage />,
+      loader: LoginLoader,
+    },
+    {
+      path: "*",
+      element: <div>Not Found</div>,
+    },
+  ]);
+
   return (
     <>
       <RouterProvider router={router} />

@@ -14,6 +14,34 @@ const AddContact = () => {
   const token = getAuthToken();
   const decodedToken = jwtDecode(token);
 
+  const addContactHandler = async (e) => {
+    e.preventDefault();
+    const currentUser = await axios.post(
+      `http://localhost:5000/api/user/add-contact/${decodedToken._id}`,
+      {
+        userId: decodedToken._id,
+        contactId: user._id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
+    );
+    if (currentUser.data.status === "success") {
+      toast.success("Contact added successfully", toastOptions);
+    } else {
+      if (currentUser.data.message === "Contact already added") {
+        toast.error("Contact already added", toastOptions);
+        inputRef.current.value = "";
+      } else {
+        toast.error("Error adding contact", toastOptions);
+      }
+    }
+    setModal(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = inputRef.current.value;
@@ -57,6 +85,7 @@ const AddContact = () => {
           setModal={setModal}
           onClose={onClose}
           user={user}
+          addContactHandler={addContactHandler}
         />
       )}
       <div className="add-contact-container">

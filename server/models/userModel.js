@@ -29,7 +29,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-
+  isOnline: {
+    type: Boolean,
+    default: false,
+  },
+  contacts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: [],
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

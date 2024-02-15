@@ -6,6 +6,7 @@ const socket = require("socket.io");
 const userRoutes = require("./routes/userRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const authRoutes = require("./routes/authRoutes");
+const User = require("./models/userModel");
 
 const app = express();
 app.disable("x-powered-by");
@@ -54,14 +55,26 @@ global.onlineUsers = new Map();
 
 io.on("connection", (socket) => {
   global.chatSocket = socket;
-  socket.on("add-user", (userId) => {
+  socket.on("add-user", async (userId) => {
     onlineUsers.set(userId, socket.id);
+    await User.findByIdAndUpdate(userId, { isOnline: true });
+    socket.broadcast.emit("user-online", userId);
   });
 
   socket.on("send-msg", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit("receive-msg", data.message);
+    }
+  });
+
+  socket.on("disconnect", async () => {
+    for (let [key, value] of onlineUsers.entries()) {
+      if (value === socket.id) {
+        onlineUsers.delete(key);
+        await User.findByIdAndUpdate(key, { isOnline: false });
+        socket.broadcast.emit("user-offline", key);
+      }
     }
   });
 });

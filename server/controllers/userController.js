@@ -52,12 +52,9 @@ exports.getAllUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById({ _id: userId }).select([
-      "email",
-      "username",
-      "avatarImage",
-      "_id",
-    ]);
+    const user = await User.findById({ _id: userId })
+      .select(["email", "username", "avatarImage", "contacts", "_id"])
+      .populate("contacts");
     if (!user) {
       return res.json({
         status: "failed",
@@ -92,6 +89,42 @@ exports.getUserByEmail = async (req, res) => {
         message: "User not found",
       });
     }
+    res.json({
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};
+
+exports.addContact = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const contactId = req.body.contactId;
+    const user = await User.findById({ _id: userId });
+    const contact = await User.findById({ _id: contactId });
+    if (!user || !contact) {
+      return res.json({
+        status: "failed",
+        message: "User or contact not found",
+      });
+    }
+
+    if (user.contacts.includes(contactId)) {
+      return res.json({
+        status: "failed",
+        message: "Contact already added",
+      });
+    }
+
+    user.contacts.push(contactId);
+    contact.contacts.push(userId);
+    await user.save();
+    await contact.save();
     res.json({
       status: "success",
       user,

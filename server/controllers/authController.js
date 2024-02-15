@@ -106,3 +106,22 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+exports.logout = async (req, res) => {
+  try {
+    console.log(req.params);
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    user.isOnline = false;
+    await user.save();
+    res.json({
+      status: "success",
+      message: "Logged Out Successfully",
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};

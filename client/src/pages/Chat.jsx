@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import { io } from "socket.io-client";
 
-import { getAllUsersRoute, getUserRoute, host } from "../utils/APIRoutes";
+import { getUserRoute } from "../utils/APIRoutes";
 import { getAuthToken, removeAuthToken } from "../utils/utility";
 import BeatLoader from "react-spinners/BeatLoader";
 import Contacts from "../components/Contacts";
@@ -15,8 +14,8 @@ import "./Chat.css";
 
 const override1 = {
   position: "absolute",
-  top: "30%",
-  left: "16%",
+  top: "50%",
+  left: "23%",
   transform: "translate(-50%, -50%)",
   borderColor: "red",
 };
@@ -33,10 +32,7 @@ const override3 = {
   borderColor: "red",
 };
 
-const Chat = () => {
-  const socket = useRef();
-  const token = jwtDecode(getAuthToken());
-  const currentUserId = token._id;
+const Chat = ({ socket }) => {
   const user = useMemo(() => jwtDecode(getAuthToken()), []);
   const [contacts, setContacts] = useState([]);
   const [contactLoading, setContactLoading] = useState(true);
@@ -51,31 +47,6 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    setContactLoading(true);
-    const fetchContacts = async () => {
-      try {
-        const response = await axios.get(
-          `${getAllUsersRoute}/${currentUserId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${getAuthToken()}`,
-            },
-          }
-        );
-        if (response.data.status === "success") {
-          setContacts(response.data.users);
-          setContactLoading(false);
-        }
-      } catch (err) {
-        navigate("/login");
-        setContactLoading(false);
-      }
-    };
-    fetchContacts();
-  }, [navigate, currentUserId]);
-
-  useEffect(() => {
     setUserDataLoading(true);
     const fetchUser = async () => {
       try {
@@ -87,6 +58,8 @@ const Chat = () => {
         });
         if (response.data.status === "success") {
           setUserData(response.data.user);
+          setContacts(response.data.user.contacts);
+          setContactLoading(false);
         } else {
           removeAuthToken();
           navigate("/");
@@ -100,13 +73,6 @@ const Chat = () => {
     };
     fetchUser();
   }, [navigate, user]);
-
-  useEffect(() => {
-    if (userData) {
-      socket.current = io(host);
-      socket.current.emit("add-user", userData._id);
-    }
-  }, [userData]);
 
   return (
     <div className="chat-container-main">
@@ -123,6 +89,8 @@ const Chat = () => {
                 aria-label="Loading Spinner"
                 data-testid="loader"
               />
+            ) : contacts.length === 0 ? (
+              <div>No contacts found</div>
             ) : (
               contacts.map((contact, index) => (
                 <Contacts
@@ -131,6 +99,7 @@ const Chat = () => {
                   index={index}
                   className={index === selectedIndex ? "selected" : ""}
                   onClick={handleContactClick}
+                  socket={socket}
                 />
               ))
             )}

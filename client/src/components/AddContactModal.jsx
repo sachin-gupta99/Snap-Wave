@@ -6,7 +6,7 @@ const Backdrop = ({ onClose }) => {
   return <div className={classes["modal-backdrop"]} onClick={onClose}></div>;
 };
 
-const Modal = ({ onClose, user }) => {
+const Modal = ({ onClose, user, addContactHandler }) => {
   console.log(user);
   return (
     <div className={classes["modal"]}>
@@ -24,7 +24,12 @@ const Modal = ({ onClose, user }) => {
         <button className={classes["cancel-button"]} onClick={onClose}>
           Cancel
         </button>
-        <button className={classes["submit-button"]}>Add user</button>
+        <button
+          className={classes["submit-button"]}
+          onClick={addContactHandler}
+        >
+          Add user
+        </button>
       </div>
     </div>
   );
@@ -32,13 +37,16 @@ const Modal = ({ onClose, user }) => {
 
 const portalElement = document.getElementById("overlay");
 
-const AddContactModal = ({ onClose, user }) => {
-  //   console.log(user);
+const AddContactModal = ({ onClose, user, addContactHandler }) => {
   return (
     <>
       {ReactDOM.createPortal(<Backdrop onClose={onClose} />, portalElement)}
       {ReactDOM.createPortal(
-        <Modal onClose={onClose} user={user} />,
+        <Modal
+          onClose={onClose}
+          user={user}
+          addContactHandler={addContactHandler}
+        />,
         portalElement
       )}
     </>
