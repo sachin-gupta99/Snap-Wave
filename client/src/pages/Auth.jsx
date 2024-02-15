@@ -32,6 +32,12 @@ const AuthPage = () => {
   );
 
   useEffect(() => {
+    if (mode !== "login" && mode !== "register") {
+      navigate("/auth?mode=login");
+    }
+  }, [mode, navigate]);
+
+  useEffect(() => {
     const userToken = getAuthToken();
     if (userToken) {
       navigate("/");

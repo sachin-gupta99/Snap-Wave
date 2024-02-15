@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import classes from "./Contacts.module.css";
 import cx from "classnames";
 import PropTypes from "prop-types";
 
-const Contacts = ({ index, contact, onClick, className }) => {
+const Contacts = ({ index, contact, onClick, className, socket }) => {
+  console.log(contact);
   const handleClick = () => {
     onClick(index);
   };
@@ -14,6 +15,28 @@ const Contacts = ({ index, contact, onClick, className }) => {
       handleClick();
     }
   };
+
+  useEffect(() => {
+    socket.current.on("user-online", (userId) => {
+      if (contact._id === userId) {
+        const status = document.getElementById(contact._id);
+        if (status) {
+          status.classList.remove(classes["offline-status"]);
+          status.classList.add(classes["online-status"]);
+        }
+      }
+    });
+
+    socket.current.on("user-offline", (userId) => {
+      if (contact._id === userId) {
+        const status = document.getElementById(contact._id);
+        if (status) {
+          status.classList.remove(classes["online-status"]);
+          status.classList.add(classes["offline-status"]);
+        }
+      }
+    });
+  }, [contact, socket]);
 
   return (
     <button
@@ -33,7 +56,13 @@ const Contacts = ({ index, contact, onClick, className }) => {
       />
       <div className={classes["contact__details"]}>
         <h3 className={classes["contact__username"]}>{contact.username}</h3>
-        <p className={classes["contact__status"]}></p>
+        <p
+          id={contact._id}
+          className={cx(
+            classes["contact__status"],
+            classes[`${contact.isOnline ? "online-status" : "offline-status"}`]
+          )}
+        ></p>
       </div>
     </button>
   );

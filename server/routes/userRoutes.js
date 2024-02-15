@@ -5,7 +5,7 @@ const { isAuthenticated } = require('../middlewares/auth');
 router.post("/set-avatar/:id", isAuthenticated, userController.setAvatar);
 router.get("/user/:id", isAuthenticated, userController.getUser);
 router.get("/users/:id", isAuthenticated, userController.getAllUsers);
-console.log("userRoutes.js");
 router.get("/email/:email", isAuthenticated, userController.getUserByEmail);
+router.post("/add-contact/:userId", isAuthenticated, userController.addContact);
 
 module.exports = router;

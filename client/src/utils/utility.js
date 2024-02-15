@@ -12,7 +12,7 @@ export const getAuthToken = () => {
 
 export const toastOptions = {
   position: "top-center",
-  autoClose: 3000,
+  autoClose: 2000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
