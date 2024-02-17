@@ -79,8 +79,8 @@ Contacts.propTypes = {
   }).isRequired,
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
-  socket: PropTypes.object.shape({
-    current: PropTypes.object.shape({
+  socket: PropTypes.shape({
+    current: PropTypes.shape({
       on: PropTypes.func,
     }),
   }),

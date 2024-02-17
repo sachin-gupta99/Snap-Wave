@@ -45,6 +45,10 @@
       font-size: 0.8rem;
       color: #fff;
     }
+
+    .online-status {
+      color: #4caf50;
+    }
   }
 }
 

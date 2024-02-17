@@ -1,13 +1,14 @@
 import React from "react";
-import classes from "./Navbar.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getAuthToken, removeAuthToken } from "../utils/utility";
-import logo from "../assets/logo.png";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { toastOptions } from "../utils/utility";
+import PropTypes from "prop-types";
+
+import { getAuthToken, removeAuthToken, toastOptions } from "../utils/utility";
 import { logoutRoute } from "../api/authApi";
+import logo from "../assets/logo.png";
+import "react-toastify/dist/ReactToastify.css";
+import classes from "./Navbar.module.css";
 
 const Navbar = ({ socket }) => {
   const navigate = useNavigate();
@@ -69,3 +70,11 @@ const Navbar = ({ socket }) => {
 };
 
 export default Navbar;
+
+Navbar.propTypes = {
+  socket: PropTypes.shape({
+    current: PropTypes.shape({
+      disconnect: PropTypes.func.isRequired,
+    }),
+  }),
+};

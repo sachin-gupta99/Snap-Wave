@@ -22,6 +22,7 @@ const AddContact = () => {
     if (currentUser.data.status === "success") {
       toast.success("Contact added successfully", toastOptions);
     } else {
+      
       if (currentUser.data.message === "Contact already added") {
         toast.error("Contact already added", toastOptions);
         inputRef.current.value = "";
@@ -41,7 +42,7 @@ const AddContact = () => {
       toast.error("User not found", toastOptions);
       return;
     }
-    
+
     if (responseUser.data.user.length === 0) {
       toast.error("User not found", toastOptions);
       return;
