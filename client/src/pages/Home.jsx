@@ -5,9 +5,8 @@ import classes from "./Home.module.css";
 import { getAuthToken } from "../utils/utility";
 import { jwtDecode } from "jwt-decode";
 import { io } from "socket.io-client";
-import { host } from "../utils/APIRoutes";
-import axios from "axios";
-import { getUserRoute } from "../utils/APIRoutes";
+import { host } from "../api/axiosInstance";
+import { getUserRoute } from "../api/userApi";
 import { useState } from "react";
 
 const Home = ({ socket }) => {
@@ -18,12 +17,7 @@ const Home = ({ socket }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${getUserRoute}/${currentUserId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getAuthToken()}`,
-          },
-        });
+        const response = await getUserRoute(currentUserId);
         setUserData(response.data.user);
       } catch (error) {
         console.error(error);
@@ -34,22 +28,10 @@ const Home = ({ socket }) => {
 
   useEffect(() => {
     if (userData) {
-      console.log(userData._id);
       socket.current = io(host);
       socket.current.emit("add-user", userData._id);
     }
   }, [userData, socket]);
-
-  // useEffect(() => {
-  //   socket.current = io(host, {
-  //     query: {
-  //       userId: currentUserId,
-  //     },
-  //   });
-  //   return () => {
-  //     socket.current.disconnect();
-  //   };
-  // }, [currentUserId, socket]);
 
   return (
     <div className={classes.container}>

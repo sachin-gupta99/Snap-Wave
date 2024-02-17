@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import ChatInput from "./ChatInput";
-import { getMessagesRoute, sendMessageRoute } from "../utils/APIRoutes";
-import { getAuthToken, toastOptions } from "../utils/utility";
+import { getMessagesRoute, sendMessageRoute } from "../api/messageApi";
+import { toastOptions } from "../utils/utility";
 import classes from "./ChatContainer.module.css";
 import cx from "classnames";
 import { toast } from "react-toastify";
@@ -18,16 +17,10 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       if (currentChat) {
-        const response = await axios.post(
-          getMessagesRoute,
-          { from: currentUser._id, to: currentChat._id },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${getAuthToken()}`,
-            },
-          }
-        );
+        const response = await getMessagesRoute({
+          from: currentUser._id,
+          to: currentChat._id,
+        });
         setMessages(response.data.messages);
       }
     };
@@ -35,21 +28,11 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   }, [currentChat, currentUser]);
 
   const handleSendMsg = async (msg) => {
-    const sendingMsg = await axios.post(
-      sendMessageRoute,
-      
-      {
-        from: currentUser._id,
-        to: currentChat._id,
-        message: msg,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      }
-    );
+    const sendingMsg = await sendMessageRoute({
+      from: currentUser._id,
+      to: currentChat._id,
+      message: msg,
+    });
 
     if (sendingMsg.data.status === "success") {
       socket.current.emit("send-msg", {
@@ -62,24 +45,30 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
       msgs.push({ fromSelf: true, message: msg });
       setMessages(msgs);
     } else {
-      toast.error("Error sending message. Please logout and sign in again", toastOptions);
+      toast.error(
+        "Error sending message. Please logout and sign in again",
+        toastOptions
+      );
     }
   };
 
   useEffect(() => {
     if (socket.current) {
-      socket.current.on("receive-msg", (msg) => {
+      socket.current.on("receive-msg", (msg, receiver) => {
         setArrivalMessage({
           fromSelf: false,
           message: msg,
+          receiver: receiver,
         });
       });
     }
   }, [socket]);
 
   useEffect(() => {
-    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage]);
+    if (arrivalMessage && currentChat._id === arrivalMessage.receiver) {
+      setMessages((prev) => [...prev, arrivalMessage]);
+    }
+  }, [arrivalMessage, currentChat._id]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -133,7 +122,6 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
 };
 
 export default ChatContainer;
-
 
 ChatContainer.propTypes = {
   currentChat: PropTypes.shape({

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate, redirect, useSearchParams } from "react-router-dom";
-import axios from "axios";
 
 import {
   registerRoute,
   loginRoute,
   verifyTokenRoute,
-} from "../utils/APIRoutes";
+} from "../api/authApi";
 import { getAuthToken, setAuthToken, toastOptions } from "../utils/utility";
 import Logo from "../assets/logo.png";
 import "./Auth.css";
@@ -54,17 +53,10 @@ const AuthPage = () => {
       let registeredUser;
       if (mode === "login") {
         const { username, password } = values;
-        registeredUser = await axios.post(loginRoute, {
-          username,
-          password,
-        });
+        registeredUser = await loginRoute({ username, password });
       } else {
         const { username, email, password } = values;
-        registeredUser = await axios.post(registerRoute, {
-          username,
-          email,
-          password,
-        });
+        registeredUser = await registerRoute({ username, email, password });
       }
 
       if (registeredUser.data.status === "success") {
@@ -211,17 +203,7 @@ const AuthPage = () => {
 export default AuthPage;
 
 export const LoginLoader = async () => {
-  const token = getAuthToken();
-  const response = await axios.post(
-    verifyTokenRoute,
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await verifyTokenRoute();
   if (response.data.status === "success") {
     return redirect("/");
   }

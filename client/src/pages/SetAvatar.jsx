@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 import loader from "../assets/loader.gif";
-import { setAvatarRoute } from "../utils/APIRoutes";
+import { setAvatarRoute } from "../api/userApi";
 import { getAuthToken, toastOptions } from "../utils/utility";
 import "./SetAvatar.css";
 
@@ -20,18 +20,10 @@ const SetAvatar = () => {
   const setProfilePicture = async () => {
     try {
       const decodedToken = jwtDecode(getAuthToken());
-      const response = await axios.post(
-        `${setAvatarRoute}/${decodedToken._id}`,
-        {
-          avatar: avatars[selectedAvatar],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getAuthToken()}`,
-          },
-        }
-      );
+
+      const response = await setAvatarRoute(decodedToken._id, {
+        avatar: avatars[selectedAvatar],
+      });
 
       if (response.data.status === "success") {
         toast.success("Profile picture set successfully", toastOptions);

@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import "./AddContact.css";
 import AddContactModal from "../components/AddContactModal";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAuthToken, toastOptions } from "../utils/utility";
 import { jwtDecode } from "jwt-decode";
+import { addContactRoute, searchUserRoute } from "../api/userApi";
 
 const AddContact = () => {
   const [modal, setModal] = useState(false);
@@ -16,19 +16,9 @@ const AddContact = () => {
 
   const addContactHandler = async (e) => {
     e.preventDefault();
-    const currentUser = await axios.post(
-      `http://localhost:5000/api/user/add-contact/${decodedToken._id}`,
-      {
-        userId: decodedToken._id,
-        contactId: user._id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      }
-    );
+    const currentUser = await addContactRoute(decodedToken._id, {
+      contactId: user._id,
+    });
     if (currentUser.data.status === "success") {
       toast.success("Contact added successfully", toastOptions);
     } else {
@@ -45,15 +35,13 @@ const AddContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = inputRef.current.value;
-    const responseUser = await axios.get(
-      `http://localhost:5000/api/user/email/${email}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      }
-    );
+
+    const responseUser = await searchUserRoute(email);
+    if (responseUser.data.status === "failed") {
+      toast.error("User not found", toastOptions);
+      return;
+    }
+    
     if (responseUser.data.user.length === 0) {
       toast.error("User not found", toastOptions);
       return;

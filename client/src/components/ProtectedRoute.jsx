@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAuthToken, removeAuthToken } from "../utils/utility";
 import { redirect, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { verifyTokenRoute } from "../utils/APIRoutes";
+import { verifyTokenRoute } from "../api/authApi";
 import BeatLoader from "react-spinners/BeatLoader";
 import PropTypes from "prop-types";
 
@@ -23,16 +22,7 @@ const ProtectedRoute = ({ children }) => {
     setLoading(true);
     const verifyToken = async () => {
       try {
-        const response = await axios.post(
-          verifyTokenRoute,
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await verifyTokenRoute();
         if (response.data.status !== "success") {
           removeAuthToken();
           return navigate("/auth?mode=login");
