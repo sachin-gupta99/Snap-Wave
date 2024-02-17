@@ -74,7 +74,6 @@ exports.getUser = async (req, res) => {
 };
 
 exports.getUserByEmail = async (req, res) => {
-  console.log(req.params);
   try {
     const email = req.params.email;
     const user = await User.findOne({ email }).select([
@@ -103,7 +102,7 @@ exports.getUserByEmail = async (req, res) => {
 
 exports.addContact = async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.params.userId;
     const contactId = req.body.contactId;
     const user = await User.findById({ _id: userId });
     const contact = await User.findById({ _id: contactId });

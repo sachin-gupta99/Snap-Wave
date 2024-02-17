@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 
-import { getUserRoute } from "../utils/APIRoutes";
+import { getUserRoute } from "../api/userApi";
 import { getAuthToken, removeAuthToken } from "../utils/utility";
 import BeatLoader from "react-spinners/BeatLoader";
 import Contacts from "../components/Contacts";
@@ -50,12 +49,7 @@ const Chat = ({ socket }) => {
     setUserDataLoading(true);
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${getUserRoute}/${user._id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getAuthToken()}`,
-          },
-        });
+        const response = await getUserRoute(user._id);
         if (response.data.status === "success") {
           setUserData(response.data.user);
           setContacts(response.data.user.contacts);

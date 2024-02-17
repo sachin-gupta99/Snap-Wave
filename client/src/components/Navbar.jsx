@@ -4,24 +4,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { getAuthToken, removeAuthToken } from "../utils/utility";
 import logo from "../assets/logo.png";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastOptions } from "../utils/utility";
-import { logoutRoute } from "../utils/APIRoutes";
+import { logoutRoute } from "../api/authApi";
 
-const Navbar = ({socket}) => {
+const Navbar = ({ socket }) => {
   const navigate = useNavigate();
   const logout = async () => {
     const token = getAuthToken();
     const decodedToken = jwtDecode(token);
     removeAuthToken();
-    await axios.get(`${logoutRoute}/${decodedToken._id}`, {
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await logoutRoute(decodedToken._id);
     socket.current.disconnect();
     toast.success("Logged out successfully", toastOptions);
     navigate("/auth?mode=login");

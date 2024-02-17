@@ -5,7 +5,6 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 
 const Contacts = ({ index, contact, onClick, className, socket }) => {
-  console.log(contact);
   const handleClick = () => {
     onClick(index);
   };

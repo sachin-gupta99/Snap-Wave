@@ -7,7 +7,6 @@ const Backdrop = ({ onClose }) => {
 };
 
 const Modal = ({ onClose, user, addContactHandler }) => {
-  console.log(user);
   return (
     <div className={classes["modal"]}>
       <div className={classes["user-container"]} key={user._id}>
