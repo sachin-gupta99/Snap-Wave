@@ -89,8 +89,8 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         </div>
         <div className={classes["chat-user-details"]}>
           <div className={classes["chat-username"]}>{currentChat.username}</div>
-          <div className={classes["chat-status"]} style={{ color: "green" }}>
-            Online
+          <div className={cx(classes["chat-status"], classes[`${currentChat.isOnline? "online-status": ""}`])}>
+            {currentChat.isOnline ? "Online" : ""}
           </div>
         </div>
       </div>

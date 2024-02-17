@@ -57,7 +57,7 @@ export default AddContactModal;
 
 AddContactModal.propTypes = {
   onClose: PropTypes.func.isRequired,
-  user: PropTypes.object.shape({
+  user: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     avatarImage: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
