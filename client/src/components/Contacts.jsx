@@ -75,7 +75,13 @@ Contacts.propTypes = {
     _id: PropTypes.string,
     avatarImage: PropTypes.string,
     username: PropTypes.string,
+    isOnline: PropTypes.bool,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
+  socket: PropTypes.object.shape({
+    current: PropTypes.object.shape({
+      on: PropTypes.func,
+    }),
+  }),
 };

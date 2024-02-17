@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./AddContactModal.module.css";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 
 const Backdrop = ({ onClose }) => {
   return <div className={classes["modal-backdrop"]} onClick={onClose}></div>;
@@ -53,3 +54,24 @@ const AddContactModal = ({ onClose, user, addContactHandler }) => {
 };
 
 export default AddContactModal;
+
+AddContactModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  user: PropTypes.object.shape({
+    _id: PropTypes.string.isRequired,
+    avatarImage: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+  }).isRequired,
+  addContactHandler: PropTypes.func.isRequired,
+};
+
+Backdrop.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  addContactHandler: PropTypes.func.isRequired,
+};
