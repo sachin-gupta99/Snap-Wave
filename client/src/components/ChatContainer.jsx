@@ -128,6 +128,7 @@ ChatContainer.propTypes = {
     _id: PropTypes.string,
     avatarImage: PropTypes.string,
     username: PropTypes.string,
+    isOnline: PropTypes.bool,
   }).isRequired,
   currentUser: PropTypes.shape({
     _id: PropTypes.string,

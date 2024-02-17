@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
-import Navbar from "../components/Navbar";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import classes from "./Home.module.css";
-import { getAuthToken } from "../utils/utility";
 import { jwtDecode } from "jwt-decode";
 import { io } from "socket.io-client";
+import PropTypes from "prop-types";
+
+import Navbar from "../components/Navbar";
+import classes from "./Home.module.css";
+import { getAuthToken } from "../utils/utility";
 import { host } from "../api/axiosInstance";
 import { getUserRoute } from "../api/userApi";
-import { useState } from "react";
 
 const Home = ({ socket }) => {
   const token = jwtDecode(getAuthToken());
@@ -42,3 +43,13 @@ const Home = ({ socket }) => {
 };
 
 export default Home;
+
+Home.propTypes = {
+  socket: PropTypes.shape({
+    current: PropTypes.shape({
+      emit: PropTypes.func,
+      on: PropTypes.func,
+      disconnect: PropTypes.func,
+    }),
+  }),
+};
