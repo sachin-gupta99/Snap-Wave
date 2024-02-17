@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import PropTypes from "prop-types";
 
 import { getUserRoute } from "../api/userApi";
 import { getAuthToken, removeAuthToken } from "../utils/utility";
@@ -75,28 +76,32 @@ const Chat = ({ socket }) => {
         <div className="chat-list">
           {/* Contacts part */}
           <div className="all-contacts">
-            {contactLoading ? (
-              <BeatLoader
-                color="maroon"
-                cssOverride={override1}
-                size={15}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
-            ) : contacts.length === 0 ? (
-              <div>No contacts found</div>
-            ) : (
-              contacts.map((contact, index) => (
-                <Contacts
-                  key={contact._id}
-                  contact={contact}
-                  index={index}
-                  className={index === selectedIndex ? "selected" : ""}
-                  onClick={handleContactClick}
-                  socket={socket}
-                />
-              ))
-            )}
+            {(() => {
+              if (contactLoading) {
+                return (
+                  <BeatLoader
+                    color="maroon"
+                    cssOverride={override1}
+                    size={15}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                );
+              } else if (contacts.length === 0) {
+                return <div>No contacts found</div>;
+              } else {
+                return contacts.map((contact, index) => (
+                  <Contacts
+                    key={contact._id}
+                    contact={contact}
+                    index={index}
+                    className={index === selectedIndex ? "selected" : ""}
+                    onClick={handleContactClick}
+                    socket={socket}
+                  />
+                ));
+              }
+            })()}
           </div>
 
           {/* Self Details part */}
@@ -162,3 +167,12 @@ const Chat = ({ socket }) => {
 };
 
 export default Chat;
+
+Chat.propTypes = {
+  socket: PropTypes.shape({
+    current: PropTypes.shape({
+      on: PropTypes.func.isRequired,
+      emit: PropTypes.func.isRequired,
+    }),
+  }),
+};

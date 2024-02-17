@@ -21,14 +21,12 @@ const AddContact = () => {
     });
     if (currentUser.data.status === "success") {
       toast.success("Contact added successfully", toastOptions);
+      inputRef.current.value = "";
+    } else if (currentUser.data.message === "Contact already added") {
+      toast.error("Contact already added", toastOptions);
+      inputRef.current.value = "";
     } else {
-      
-      if (currentUser.data.message === "Contact already added") {
-        toast.error("Contact already added", toastOptions);
-        inputRef.current.value = "";
-      } else {
-        toast.error("Error adding contact", toastOptions);
-      }
+      toast.error("Error adding contact", toastOptions);
     }
     setModal(false);
   };
