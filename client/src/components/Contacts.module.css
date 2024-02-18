@@ -29,6 +29,7 @@
     gap: 0.5rem;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
   }
   .contact__username {
     font-size: 1rem;

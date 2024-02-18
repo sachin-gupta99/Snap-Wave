@@ -64,6 +64,11 @@ const Navbar = ({ socket }) => {
         <li>
           <NavLink onClick={logout}>Logout</NavLink>
         </li>
+        <li>
+          <NavLink to="/profile" className={classes["profile-link"]}>
+            <img src="" alt="" />
+          </NavLink>
+        </li>
       </ul>
     </div>
   );

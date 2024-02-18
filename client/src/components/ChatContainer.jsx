@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+import cx from "classnames";
+import PropTypes from "prop-types";
+
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import ChatInput from "./ChatInput";
 import { getMessagesRoute, sendMessageRoute } from "../api/messageApi";
 import { toastOptions } from "../utils/utility";
 import classes from "./ChatContainer.module.css";
-import cx from "classnames";
-import { toast } from "react-toastify";
-import PropTypes from "prop-types";
 import "react-toastify/dist/ReactToastify.css";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
