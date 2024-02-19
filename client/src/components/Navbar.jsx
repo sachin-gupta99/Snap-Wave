@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
@@ -9,10 +9,14 @@ import { logoutRoute } from "../api/authApi";
 import logo from "../assets/logo.png";
 import "react-toastify/dist/ReactToastify.css";
 import classes from "./Navbar.module.css";
+import DropDownMenu from "./DropDownMenu";
 
-const Navbar = ({ socket }) => {
+const Navbar = ({ socket, user }) => {
+  const menuRef = useRef();
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const logout = async () => {
+
+  const onLogout = async () => {
     const token = getAuthToken();
     const decodedToken = jwtDecode(token);
     removeAuthToken();
@@ -22,6 +26,21 @@ const Navbar = ({ socket }) => {
     navigate("/auth?mode=login");
   };
 
+  useEffect(() => {
+    let handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setOpen(false);
+        console.log(menuRef.current);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
   return (
     <div className={classes["navbar"]}>
       <div className={classes["navbar-brand"]}>
@@ -30,46 +49,48 @@ const Navbar = ({ socket }) => {
           <span>Snap-Wave</span>
         </NavLink>
       </div>
-      <ul id="nav-mobile" className={classes["navbar-menu"]}>
-        <li>
-          <NavLink
-            to="/chat"
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-          >
-            Chat
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/add-contact"
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-          >
-            Add Contact
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/setAvatar"
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-          >
-            Set Avatar
-          </NavLink>
-        </li>
-        <li>
-          <NavLink onClick={logout}>Logout</NavLink>
-        </li>
-        <li>
-          <NavLink to="/profile" className={classes["profile-link"]}>
-            <img src="" alt="" />
-          </NavLink>
-        </li>
-      </ul>
+      <div className={classes["navbar-options"]}>
+        <ul id="nav-mobile" className={classes["navbar-menu"]}>
+          <li>
+            <NavLink
+              to="/chat"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              Chat
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/add-contact"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              Add Contact
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/setAvatar"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              Set Avatar
+            </NavLink>
+          </li>
+        </ul>
+        <div className={classes["menu-container"]} ref={menuRef}>
+          <DropDownMenu
+            user={user}
+            setOpen={setOpen}
+            open={open}
+            onLogout={onLogout}
+          />
+        </div>
+      </div>
     </div>
   );
 };

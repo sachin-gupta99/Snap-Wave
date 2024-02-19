@@ -36,7 +36,7 @@ const Home = ({ socket }) => {
 
   return (
     <div className={classes.container}>
-      <Navbar socket={socket} />
+      <Navbar socket={socket} user={userData} />
       <Outlet />
     </div>
   );
