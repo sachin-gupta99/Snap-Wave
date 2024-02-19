@@ -14,12 +14,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 30%;
-  border: 0.2rem solid grey;
+  border: 0.1rem solid black;
   border-radius: 0.4rem;
   box-shadow: 0 0 0.5rem grey;
   padding: 1rem;
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
   background-color: antiquewhite;
   z-index: 101;
+  transition: all 0.3s ease-in-out;
 }
 
 .user-container {
@@ -72,6 +76,8 @@
   border: 0.1rem solid grey;
   background-color: #f44336;
   color: white;
+  width: 30%;
+  height: 3rem;
   font-size: 1rem;
   cursor: pointer;
 }
@@ -83,5 +89,7 @@
   background-color: #4caf50;
   color: white;
   font-size: 1rem;
+  width: 30%;
+  height: 3rem;
   cursor: pointer;
 }

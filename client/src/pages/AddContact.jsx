@@ -9,6 +9,7 @@ import { addContactRoute, searchUserRoute } from "../api/userApi";
 
 const AddContact = () => {
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const inputRef = useRef();
   const token = getAuthToken();
@@ -32,15 +33,18 @@ const AddContact = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     const email = inputRef.current.value;
-
+    e.preventDefault();
     if (email === "") {
       toast.error("Please enter a username", toastOptions);
       return;
     }
+    
+    setModal(true);
+    setLoading(true);
 
     const responseUser = await searchUserRoute(email);
+    setLoading(false);
     if (responseUser.data.status === "failed") {
       toast.error("User not found", toastOptions);
       return;
@@ -58,11 +62,6 @@ const AddContact = () => {
     }
 
     setUser(responseUser.data.user);
-    setModal(true);
-  };
-
-  const onClick = () => {
-    setModal(false);
   };
 
   const onClose = () => {
@@ -73,17 +72,16 @@ const AddContact = () => {
     <>
       {modal && (
         <AddContactModal
-          onClick={onClick}
-          setModal={setModal}
           onClose={onClose}
           user={user}
+          loading={loading}
           addContactHandler={addContactHandler}
         />
       )}
       <div className={classes["add-contact-container"]}>
         <div className={classes["title-container"]}>Add Contact</div>
         <div className={classes["input-container"]}>
-          <input type="text" placeholder="Enter Username" ref={inputRef} />
+          <input type="text" placeholder="Enter Email ID" ref={inputRef} />
           <button className={classes["submit-button"]} onClick={handleSubmit}>
             Search User
           </button>

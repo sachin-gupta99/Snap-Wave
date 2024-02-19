@@ -2,24 +2,40 @@ import React from "react";
 import classes from "./AddContactModal.module.css";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
+import BeatLoader from "react-spinners/BeatLoader";
+
+const override = {
+  justifyContent: "center",
+};
 
 const Backdrop = ({ onClose }) => {
   return <div className={classes["modal-backdrop"]} onClick={onClose}></div>;
 };
 
-const Modal = ({ onClose, user, addContactHandler }) => {
+const Modal = ({ onClose, user, loading, addContactHandler }) => {
   return (
     <div className={classes["modal"]}>
-      <div className={classes["user-container"]} key={user._id}>
-        <div className={classes.avatar}>
-          <img
-            src={`data:image/svg+xml;base64,${user.avatarImage}`}
-            alt="user-avatar"
-          />
+      {loading ? (
+        <BeatLoader
+          color="maroon"
+          cssOverride={override}
+          size={15}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      ) : (
+        <div className={classes["user-container"]} key={user._id}>
+          <div className={classes.avatar}>
+            <img
+              src={`data:image/svg+xml;base64,${user.avatarImage}`}
+              alt="user-avatar"
+            />
+          </div>
+          <span className={classes["user-username"]}>{user.username}</span>
+          <span className={classes["user-email"]}>{user.email}</span>
         </div>
-        <span className={classes["user-username"]}>{user.username}</span>
-        <span className={classes["user-email"]}>{user.email}</span>
-      </div>
+      )}
+
       <div className={classes["action-buttons"]}>
         <button className={classes["cancel-button"]} onClick={onClose}>
           Cancel
@@ -37,7 +53,7 @@ const Modal = ({ onClose, user, addContactHandler }) => {
 
 const portalElement = document.getElementById("overlay");
 
-const AddContactModal = ({ onClose, user, addContactHandler }) => {
+const AddContactModal = ({ onClose, user, loading, addContactHandler }) => {
   return (
     <>
       {ReactDOM.createPortal(<Backdrop onClose={onClose} />, portalElement)}
@@ -45,6 +61,7 @@ const AddContactModal = ({ onClose, user, addContactHandler }) => {
         <Modal
           onClose={onClose}
           user={user}
+          loading={loading}
           addContactHandler={addContactHandler}
         />,
         portalElement
