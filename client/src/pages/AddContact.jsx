@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "./AddContact.css";
+import classes from "./AddContact.module.css";
 import AddContactModal from "../components/AddContactModal";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,6 +34,11 @@ const AddContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = inputRef.current.value;
+
+    if (email === "") {
+      toast.error("Please enter a username", toastOptions);
+      return;
+    }
 
     const responseUser = await searchUserRoute(email);
     if (responseUser.data.status === "failed") {
@@ -75,11 +80,11 @@ const AddContact = () => {
           addContactHandler={addContactHandler}
         />
       )}
-      <div className="add-contact-container">
-        <div className="title-container">Add Contact</div>
-        <div className="input-container">
+      <div className={classes["add-contact-container"]}>
+        <div className={classes["title-container"]}>Add Contact</div>
+        <div className={classes["input-container"]}>
           <input type="text" placeholder="Enter Username" ref={inputRef} />
-          <button className="submit-button" onClick={handleSubmit}>
+          <button className={classes["submit-button"]} onClick={handleSubmit}>
             Search User
           </button>
         </div>

@@ -5,7 +5,7 @@
   justify-content: center;
   width: 30%;
   margin: auto;
-  height: 40%;
+  height: 50%;
   border: 0.2rem solid grey;
   border-radius: 0.4rem;
   box-shadow: 0 0 0.5rem grey;
@@ -13,10 +13,7 @@
 }
 
 .title-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    height: 30%;
   font-size: 1.5rem;
 }
 
