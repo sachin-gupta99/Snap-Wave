@@ -1,12 +1,13 @@
 .chat-container {
   display: flex;
+  padding: 0.4rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.2rem;
   height: 100%;
   width: 100%;
-  background-color: #494949;
+  background-color: whitesmoke;
   border-radius: 8px;
 }
 
@@ -39,11 +40,11 @@
     .chat-username {
       font-size: 1.1rem;
       font-weight: 600;
-      color: #fff;
+      color: #4caf50;
     }
     .chat-status {
       font-size: 0.8rem;
-      color: #fff;
+      color: rgb(0, 67, 0);
     }
 
     .online-status {
@@ -75,13 +76,13 @@
   .message-content {
     max-width: 40%;
     overflow-wrap: normal;
-    padding: 0.3rem;
-    font-size: 1.1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
     border-radius: 0.4rem;
   }
   .sent {
     align-self: flex-end;
-    background-color: #007bff;
+    background-color: #4caf50;
     color: #fff;
   }
   .receive {
@@ -98,7 +99,7 @@
   height: 100%;
   width: 100%;
   font-size: 1.5vw;
-  color: #fff;
+  color: #4caf50;
 }
 
 .chat-input {
