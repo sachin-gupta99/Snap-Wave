@@ -17,7 +17,7 @@
     padding: 0.4rem;
     border: none;
     border-radius: 0.4rem;
-    color: white;
+    color: black;
     background-color: transparent;
     &:focus {
       outline: none;
@@ -31,7 +31,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #fff;
+  color: #4caf50;
   background-color: transparent;
   border: none;
   font-size: 1.5rem;
