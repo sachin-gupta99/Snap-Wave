@@ -25,9 +25,9 @@
 
 .chat-list {
   width: 30%;
-  background-color: rgb(255, 166, 166);
-  padding: 0.4rem;
-  border-right: 1px solid #000000;
+  /* background-color: rgb(255, 166, 166); */
+  padding: 0.2rem;
+  /* border-right: 1px solid #000000; */
   border-radius: 0.4rem;
   height: 100%;
   overflow: auto;
@@ -49,14 +49,14 @@
   height: 100%;
   background-color: #494949;
   border-radius: 8px;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
 }
 
 .all-contacts {
   height: 90%;
   display: flex;
   flex-direction: column;
-  padding: 0.3rem;
+  padding: 0.2rem;
   gap: 0.3rem;
   border-radius: 0.4rem;
   overflow: auto;

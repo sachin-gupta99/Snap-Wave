@@ -10,6 +10,7 @@
   border-radius: 0.4rem;
   box-shadow: 0 0 0.3rem grey;
   overflow: hidden;
+  background-color: #f4f4f4;
 }
 
 .title-container {
