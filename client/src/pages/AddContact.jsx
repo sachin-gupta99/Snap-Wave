@@ -9,7 +9,7 @@ import { addContactRoute, searchUserRoute } from "../api/userApi";
 
 const AddContact = () => {
   const [modal, setModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const inputRef = useRef();
   const token = getAuthToken();
@@ -33,35 +33,51 @@ const AddContact = () => {
   };
 
   const handleSubmit = async (e) => {
-    const email = inputRef.current.value;
+    if (e.key !== "Enter" && e.type !== "click") return;
+
     e.preventDefault();
+    const email = inputRef.current.value;
+
     if (email === "") {
       toast.error("Please enter a username", toastOptions);
       return;
     }
-    
-    setModal(true);
-    setLoading(true);
 
-    const responseUser = await searchUserRoute(email);
-    setLoading(false);
-    if (responseUser.data.status === "failed") {
-      toast.error("User not found", toastOptions);
+    const loading = toast.loading("Searching user", toastOptions);
+
+    const response = await searchUserRoute(email);
+
+    if (response.data.status === "failed") {
+      toast.update(loading, {
+        ...toastOptions,
+        render: "User not found",
+        type: "error",
+        isLoading: false,
+      });
       return;
-    }
+    } else if (response.data.user.length === 0) {
+      toast.update(loading, {
+        ...toastOptions,
+        render: "User not found",
+        type: "error",
+        isLoading: false,
+      });
 
-    if (responseUser.data.user.length === 0) {
-      toast.error("User not found", toastOptions);
       return;
-    }
+    } else if (response.data.user._id === decodedToken._id) {
+      toast.update(loading, {
+        ...toastOptions,
+        render: "You cannot add yourself",
+        type: "error",
+        isLoading: false,
+      });
 
-    if (responseUser.data.user._id === decodedToken._id) {
-      toast.error("You cannot add yourself", toastOptions);
-      inputRef.current.value = "";
       return;
+    } else {
+      toast.dismiss(loading);
+      setModal(true);
+      setUser(response.data.user);
     }
-
-    setUser(responseUser.data.user);
   };
 
   const onClose = () => {
@@ -74,14 +90,18 @@ const AddContact = () => {
         <AddContactModal
           onClose={onClose}
           user={user}
-          loading={loading}
           addContactHandler={addContactHandler}
         />
       )}
       <div className={classes["add-contact-container"]}>
         <div className={classes["title-container"]}>Add Contact</div>
         <div className={classes["input-container"]}>
-          <input type="text" placeholder="Enter Email ID" ref={inputRef} />
+          <input
+            type="text"
+            placeholder="Enter Email ID"
+            ref={inputRef}
+            onKeyDown={handleSubmit}
+          />
           <button className={classes["submit-button"]} onClick={handleSubmit}>
             Search User
           </button>

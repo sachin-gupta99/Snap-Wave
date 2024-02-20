@@ -55,7 +55,7 @@
   font-weight: bold;
   text-decoration: none;
   color: #333;
-  padding: 5px;
+  padding: 0.5rem;
   border-radius: 0.4rem;
   transition: all 0.3s ease;
 }
@@ -64,8 +64,6 @@
   color: #fff;
   background-color: #333;
   border-radius: 0.4rem;
-  padding: 0.5rem;
-  transform: scaleY(1.1);
 }
 
 .navbar-menu li a.active,

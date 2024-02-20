@@ -53,7 +53,7 @@ function DropdownItem(props) {
   return (
     <li className={classes["dropdownItem"]} onClick={props.onClick}>
       <props.icon />
-      <a> {props.text} </a>
+      <span> {props.text} </span>
     </li>
   );
 }

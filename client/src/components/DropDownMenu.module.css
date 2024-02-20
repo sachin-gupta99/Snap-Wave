@@ -80,10 +80,10 @@ ul {
 .dropdown-menu ul li {
   margin: 0;
   padding: 1rem 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 0.1rem solid rgba(0, 0, 0, 0.08);
 }
 
-.dropdown-menu ul li:hover a {
+.dropdown-menu ul li:hover span {
   color: #4caf50;
   cursor: pointer;
 }
@@ -107,8 +107,9 @@ ul {
   transition: var(--speed);
 }
 
-.dropdownItem a {
+.dropdownItem span {
   max-width: 100px;
+  cursor: pointer;
   margin-left: 10px;
   transition: var(--speed);
 }
