@@ -57,15 +57,14 @@
   width: 100%;
   padding: 4%;
   font-size: 1.5rem;
-  background-color: black;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 0.4rem;
   cursor: pointer;
   transition: 0.3s ease-in-out;
   &:hover {
-    background-color: rgb(208, 205, 205);
-    color: black;
+    background-color: #256a28;
   }
 }
 
