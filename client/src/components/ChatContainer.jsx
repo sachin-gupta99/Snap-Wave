@@ -10,12 +10,15 @@ import { getMessagesRoute, sendMessageRoute } from "../api/messageApi";
 import { toastOptions } from "../utils/utility";
 import classes from "./ChatContainer.module.css";
 import "react-toastify/dist/ReactToastify.css";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const scrollRef = useRef();
   useEffect(() => {
+    setLoading(true);
     const fetchMessages = async () => {
       if (currentChat) {
         const response = await getMessagesRoute({
@@ -24,6 +27,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         });
         setMessages(response.data.messages);
       }
+      setLoading(false);
     };
     fetchMessages();
   }, [currentChat, currentUser]);
@@ -90,14 +94,29 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         </div>
         <div className={classes["chat-user-details"]}>
           <div className={classes["chat-username"]}>{currentChat.username}</div>
-          <div className={cx(classes["chat-status"], classes[`${currentChat.isOnline? "online-status": ""}`])}>
+          <div
+            className={cx(
+              classes["chat-status"],
+              classes[`${currentChat.isOnline ? "online-status" : ""}`]
+            )}
+          >
             {currentChat.isOnline ? "Online" : ""}
           </div>
         </div>
       </div>
       <div className={classes["chat-messages"]}>
         <div className={classes["message-container"]}>
-          {messages.length === 0 ? (
+          {loading ? (
+            <div className={classes["loading"]}>
+              <BeatLoader
+                color="maroon"
+                size={15}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+              <span>Loading your messages...</span>
+            </div>
+          ) : messages.length === 0 ? (
             <div className={classes["no-messages"]}>No messages</div>
           ) : (
             messages.map((msg) => (

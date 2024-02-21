@@ -1,23 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { BsEmojiSmile } from "react-icons/bs";
-import classes from "./ChatInput.module.css";
+import cx from "classnames";
 import Picker from "emoji-picker-react";
 import PropTypes from "prop-types";
+
+import classes from "./ChatInput.module.css";
 import "./EmojiPicker.css";
 
 const ChatInput = ({ onSend }) => {
+  const pickerRef = useRef();
+
   const [message, setMessage] = useState("");
-  
   const [emojiPicker, setEmojiPicker] = useState(false);
 
-  const handleEmojiPicker = () => {
-    setEmojiPicker(!emojiPicker);
-  };
-
   const handleEmojiClick = (e) => {
-    let emoji = e.emoji;
-    setMessage(message + emoji);
+    setMessage((prev) => prev + e.emoji);
   };
 
   const sendMsg = (e) => {
@@ -29,11 +27,42 @@ const ChatInput = ({ onSend }) => {
     }
   };
 
+  useEffect(() => {
+    let handler = (e) => {
+      if (!pickerRef.current.contains(e.target)) {
+        setEmojiPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
   return (
     <div className={classes["chat-input-container"]}>
-      <div className="chat-emoji" >
-        <BsEmojiSmile onClick={handleEmojiPicker} />
-        {emojiPicker && <Picker onEmojiClick={handleEmojiClick} width={"300px"} emojiStyle="google" />}
+      <div className={classes["emoji-container"]} ref={pickerRef}>
+        <div
+          className="chat-emoji"
+          onClick={() => setEmojiPicker((prev) => !prev)}
+        >
+          <BsEmojiSmile />
+        </div>
+        <div
+          className={cx(
+            classes["emoji-palette"],
+            classes[`${emojiPicker ? "active" : "inactive"}`]
+          )}
+        >
+          <Picker
+            onEmojiClick={handleEmojiClick}
+            width={"300px"}
+            height={"400px"}
+            emojiStyle="google"
+          />
+        </div>
       </div>
       <div className={classes["chat-message"]}>
         <input
