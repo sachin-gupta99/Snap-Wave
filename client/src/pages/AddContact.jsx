@@ -9,7 +9,6 @@ import { addContactRoute, searchUserRoute } from "../api/userApi";
 
 const AddContact = () => {
   const [modal, setModal] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const inputRef = useRef();
   const token = getAuthToken();
