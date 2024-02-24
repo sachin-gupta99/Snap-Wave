@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import PropTypes from "prop-types";
 
-import { getUserRoute } from "../api/userApi";
-import { getAuthToken, removeAuthToken } from "../utils/utility";
+import { getUserBasicRoute, getUserRoute } from "../api/userApi";
+import { getAuthToken, removeAuthToken, toastOptions } from "../utils/utility";
 import BeatLoader from "react-spinners/BeatLoader";
 import Contacts from "../components/Contacts";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import "./Chat.css";
+import { toast } from "react-toastify";
 
 const override1 = {
   position: "absolute",
@@ -39,10 +40,19 @@ const Chat = ({ socket }) => {
   const [userDataLoading, setUserDataLoading] = useState(true);
   const [userData, setUserData] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(undefined);
-  const currentChat = contacts[selectedIndex];
+  const [currentChat, setCurrentChat] = useState(contacts[selectedIndex] || {});
   const navigate = useNavigate();
 
-  const handleContactClick = (index) => {
+  const handleContactClick = async (index) => {
+    const currentChatSelected = await getUserBasicRoute(contacts[index]._id);
+
+    if (currentChatSelected.data.status === "failed") {
+      toast.error("Something went wrong. Please Sign in again", toastOptions);
+      removeAuthToken();
+      navigate("/");
+    } else {
+      setCurrentChat(currentChatSelected.data.user);
+    }
     setSelectedIndex(index);
   };
 
