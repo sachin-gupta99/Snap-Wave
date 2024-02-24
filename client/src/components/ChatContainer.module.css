@@ -44,10 +44,6 @@
     }
     .chat-status {
       font-size: 0.8rem;
-      color: rgb(0, 67, 0);
-    }
-
-    .online-status {
       color: #4caf50;
     }
   }

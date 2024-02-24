@@ -16,6 +16,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [arrivalMessage, setArrivalMessage] = useState(null);
+
   const scrollRef = useRef();
   useEffect(() => {
     setLoading(true);
@@ -25,7 +26,15 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
           from: currentUser._id,
           to: currentChat._id,
         });
-        setMessages(response.data.messages);
+
+        if (response.data.status === "success")
+          setMessages(response.data.messages);
+        else {
+          toast.error(
+            "Error fetching messages. Please logout and sign in again",
+            toastOptions
+          );
+        }
       }
       setLoading(false);
     };

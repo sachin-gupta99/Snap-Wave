@@ -53,8 +53,43 @@ exports.getUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById({ _id: userId })
-      .select(["email", "username", "avatarImage", "contacts", "_id"])
-      .populate("contacts");
+      .select([
+        "email",
+        "username",
+        "avatarImage",
+        "contacts",
+        "isOnline",
+        "_id",
+      ])
+      .populate("contacts")
+      .select(["username", "avatarImage", "isOnline", "_id"]);
+    if (!user) {
+      return res.json({
+        status: "failed",
+        message: "User not found",
+      });
+    }
+    res.json({
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};
+
+exports.getUserBasic = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById({ _id: userId }).select([
+      "username",
+      "avatarImage",
+      "isOnline",
+      "_id",
+    ]);
     if (!user) {
       return res.json({
         status: "failed",
