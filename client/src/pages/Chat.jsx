@@ -12,6 +12,7 @@ import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import "./Chat.css";
 import { toast } from "react-toastify";
+import { router } from "../App";
 
 const override1 = {
   position: "absolute",
@@ -33,7 +34,8 @@ const override3 = {
   borderColor: "red",
 };
 
-const Chat = ({ socket }) => {
+const Chat = ({ userOnline, socket }) => {
+  console.log("Chat -> userOnline", userOnline);
   const user = useMemo(() => jwtDecode(getAuthToken()), []);
   const [contacts, setContacts] = useState([]);
   const [contactLoading, setContactLoading] = useState(true);
@@ -41,7 +43,7 @@ const Chat = ({ socket }) => {
   const [userData, setUserData] = useState({});
   const [selectedIndex, setSelectedIndex] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(contacts[selectedIndex] || {});
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleContactClick = async (index) => {
     const currentChatSelected = await getUserBasicRoute(contacts[index]._id);
@@ -49,7 +51,8 @@ const Chat = ({ socket }) => {
     if (currentChatSelected.data.status === "failed") {
       toast.error("Something went wrong. Please Sign in again", toastOptions);
       removeAuthToken();
-      navigate("/");
+      router.navigate("/auth?mode=login");
+      // navigate("/");
     } else {
       setCurrentChat(currentChatSelected.data.user);
     }
@@ -61,23 +64,26 @@ const Chat = ({ socket }) => {
     const fetchUser = async () => {
       try {
         const response = await getUserRoute(user._id);
+        console.log(response.data.user);
         if (response.data.status === "success") {
           setUserData(response.data.user);
           setContacts(response.data.user.contacts);
           setContactLoading(false);
         } else {
           removeAuthToken();
-          navigate("/");
+          router.navigate("/auth?mode=login");
+          // navigate("/");
         }
         setUserDataLoading(false);
       } catch (err) {
         removeAuthToken();
-        navigate("/");
+        router.navigate("/auth?mode=login");
+        // navigate("/");
         setUserDataLoading(false);
       }
     };
     fetchUser();
-  }, [navigate, user]);
+  }, [user]);
 
   return (
     <div className="chat-container-main">
@@ -105,6 +111,7 @@ const Chat = ({ socket }) => {
                     key={contact._id}
                     contact={contact}
                     index={index}
+                    userOnline={userOnline}
                     className={index === selectedIndex ? "selected" : ""}
                     onClick={handleContactClick}
                     socket={socket}

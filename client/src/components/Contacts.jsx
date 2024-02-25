@@ -4,7 +4,15 @@ import classes from "./Contacts.module.css";
 import cx from "classnames";
 import PropTypes from "prop-types";
 
-const Contacts = ({ index, contact, onClick, className, socket }) => {
+const Contacts = ({
+  index,
+  contact,
+  onClick,
+  userOnline,
+  className,
+  socket,
+}) => {
+  console.log(userOnline);
   const handleClick = () => {
     onClick(index);
   };
@@ -16,26 +24,43 @@ const Contacts = ({ index, contact, onClick, className, socket }) => {
   };
 
   useEffect(() => {
-    socket.current.on("user-online", (userId) => {
-      if (contact._id === userId) {
-        const status = document.getElementById(contact._id);
-        if (status) {
-          status.classList.remove(classes["offline-status"]);
-          status.classList.add(classes["online-status"]);
-        }
+    if (userOnline.includes(contact._id)) {
+      console.log(contact._id);
+      const status = document.getElementById(contact._id);
+      if (status) {
+        status.classList.remove(classes["offline-status"]);
+        status.classList.add(classes["online-status"]);
       }
-    });
-
-    socket.current.on("user-offline", (userId) => {
-      if (contact._id === userId) {
+    } else {
+      if (!contact.isOnline) {
         const status = document.getElementById(contact._id);
         if (status) {
           status.classList.remove(classes["online-status"]);
           status.classList.add(classes["offline-status"]);
         }
       }
-    });
-  }, [contact, socket]);
+    }
+  }, [contact, userOnline]);
+  //   socket.current.on("user-online", (userId) => {
+  //     if (contact._id === userId) {
+  //       const status = document.getElementById(contact._id);
+  //       if (status) {
+  //         status.classList.remove(classes["offline-status"]);
+  //         status.classList.add(classes["online-status"]);
+  //       }
+  //     }
+  //   });
+
+  //   socket.current.on("user-offline", (userId) => {
+  //     if (contact._id === userId) {
+  //       const status = document.getElementById(contact._id);
+  //       if (status) {
+  //         status.classList.remove(classes["online-status"]);
+  //         status.classList.add(classes["offline-status"]);
+  //       }
+  //     }
+  //   });
+  // }, [contact, socket]);
 
   return (
     <button

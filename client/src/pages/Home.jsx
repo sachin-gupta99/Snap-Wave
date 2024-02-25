@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { io } from "socket.io-client";
-import PropTypes from "prop-types";
 
 import Navbar from "../components/Navbar";
 import classes from "./Home.module.css";
-import { getAuthToken } from "../utils/utility";
-import { host } from "../api/axiosInstance";
+import { getAuthToken, removeAuthToken } from "../utils/utility";
 import { getUserRoute } from "../api/userApi";
+import socket from "../socket";
+import { router } from "../App";
 
-const Home = ({ socket }) => {
-  const token = jwtDecode(getAuthToken());
-  const currentUserId = token._id;
+const Home = () => {
+  const token = getAuthToken();
+  const decodedToken = jwtDecode(token);
+  const currentUserId = decodedToken._id;
+
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await getUserRoute(currentUserId);
-        setUserData(response.data.user);
+        if (response.data.status === "failed") {
+          removeAuthToken();
+          router.navigate("/auth?mode=login");
+        } else {
+          setUserData(response.data.user);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -29,10 +35,16 @@ const Home = ({ socket }) => {
 
   useEffect(() => {
     if (userData) {
-      socket.current = io(host);
+      socket.current.connect();
       socket.current.emit("add-user", userData._id);
     }
-  }, [userData, socket]);
+
+    return () => {
+      if (socket.current.readyState === 1) {
+        socket.current.disconnect();
+      }
+    };
+  }, [userData]);
 
   return (
     <div className={classes.container}>
@@ -43,13 +55,3 @@ const Home = ({ socket }) => {
 };
 
 export default Home;
-
-Home.propTypes = {
-  socket: PropTypes.shape({
-    current: PropTypes.shape({
-      emit: PropTypes.func,
-      on: PropTypes.func,
-      disconnect: PropTypes.func,
-    }),
-  }),
-};
