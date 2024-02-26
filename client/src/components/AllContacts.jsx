@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { BeatLoader } from "react-spinners";
+import { toast } from "react-toastify";
+
 import Contact from "./Contact";
 import { userActions } from "../store/user";
-import { toast } from "react-toastify";
 import { getUserBasicRoute } from "../api/userApi";
 import { removeAuthToken } from "../utils/utility";
 import { router } from "../App";
 import { toastOptions } from "../utils/utility";
-import { BeatLoader } from "react-spinners";
 import { getContactsRoute } from "../api/userApi";
 
 const override = {

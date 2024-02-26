@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { BeatLoader } from "react-spinners";
+
 import sampleAvatar from "../assets/sample-avatar.jpg";
-import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
 
 const override = {

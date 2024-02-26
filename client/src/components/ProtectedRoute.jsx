@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { getAuthToken, removeAuthToken } from "../utils/utility";
-import { redirect, useNavigate } from "react-router-dom";
-import { verifyTokenRoute } from "../api/authApi";
-import BeatLoader from "react-spinners/BeatLoader";
 import PropTypes from "prop-types";
+import BeatLoader from "react-spinners/BeatLoader";
+
+import { getAuthToken, removeAuthToken } from "../utils/utility";
+import { verifyTokenRoute } from "../api/authApi";
+import { router } from "../App";
 
 const override = {
   position: "absolute",
@@ -15,7 +16,6 @@ const override = {
 
 const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const token = getAuthToken();
 
   useEffect(() => {
@@ -25,16 +25,16 @@ const ProtectedRoute = ({ children }) => {
         const response = await verifyTokenRoute();
         if (response.data.status !== "success") {
           removeAuthToken();
-          return navigate("/auth?mode=login");
+          return router.navigate("/auth?mode=login");
         }
         setLoading(false);
       } catch (err) {
-        redirect("/auth?mode=login");
+        router.navigate("/auth?mode=login");
         setLoading(false);
       }
     };
     verifyToken();
-  }, [token, navigate]);
+  }, [token]);
 
   return loading ? (
     <BeatLoader

@@ -1,14 +1,15 @@
 import React, { useRef } from "react";
-import classes from "./AddContact.module.css";
-import AddContactModal from "../components/AddContactModal";
+import { useSelector, useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import AddContactModal from "../components/AddContactModal";
 import { getAuthToken, toastOptions } from "../utils/utility";
-import { jwtDecode } from "jwt-decode";
 import { addContactRoute, searchUserRoute } from "../api/userApi";
-import { useSelector, useDispatch } from "react-redux";
 import { uiActions } from "../store/ui";
 import { userActions } from "../store/user";
+import classes from "./AddContact.module.css";
 
 const AddContact = () => {
   const dispatch = useDispatch();
