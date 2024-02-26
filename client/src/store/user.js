@@ -18,6 +18,9 @@ const userSlice = createSlice({
       avatar: "",
     },
     contactSearchLoading: false,
+    avatars: [],
+    avatarLoading: true,
+    selectedAvatar: "",
   },
   reducers: {
     setUserData(state, action) {
@@ -31,7 +34,6 @@ const userSlice = createSlice({
     addUserContacts(state, action) {
       if (state.user) {
         state.contacts = [...state.contacts, action.payload];
-        console.log(state.contacts);
       }
     },
     setUserContactsLoading(state, action) {
@@ -73,6 +75,15 @@ const userSlice = createSlice({
     },
     setContactSearchLoading(state, action) {
       state.contactSearchLoading = action.payload;
+    },
+    setAvatars(state, action) {
+      state.avatars = action.payload;
+    },
+    setAvatarLoading(state, action) {
+      state.avatarLoading = action.payload;
+    },
+    setSelectedAvatar(state, action) {
+      state.selectedAvatar = action.payload;
     },
   },
 });

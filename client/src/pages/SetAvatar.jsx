@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import { Buffer } from "buffer";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
@@ -9,13 +8,17 @@ import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../api/userApi";
 import { getAuthToken, toastOptions } from "../utils/utility";
 import "./SetAvatar.css";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { userActions } from "../store/user";
+import { router } from "../App";
 
 const SetAvatar = () => {
   const AvatarAPI = "https://api.multiavatar.com/";
-  const navigate = useNavigate();
-  const [avatars, setAvatars] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedAvatar, setSelectedAvatar] = useState();
+  const dispatch = useDispatch();
+  const avatars = useSelector((state) => state.user.avatars);
+  const loading = useSelector((state) => state.user.avatarLoading);
+  const selectedAvatar = useSelector((state) => state.user.selectedAvatar);
 
   const setProfilePicture = async () => {
     try {
@@ -26,8 +29,11 @@ const SetAvatar = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("Profile picture set successfully. Please reload to see the effect", toastOptions);
-        navigate("/");
+        toast.success(
+          "Profile picture set successfully. Please reload to see the effect",
+          toastOptions
+        );
+        router.navigate("/");
       } else {
         toast.error("Error setting profile picture", toastOptions);
       }
@@ -39,9 +45,9 @@ const SetAvatar = () => {
   useEffect(() => {
     const user = getAuthToken();
     if (!user) {
-      navigate("/auth?mode=login");
+      router.navigate("/auth?mode=login");
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     const crypto = window.crypto || window.Crypto;
@@ -59,9 +65,8 @@ const SetAvatar = () => {
           const buffer = Buffer.from(image.data).toString("base64");
           tempAvatars.push(buffer);
         }
-
-        setAvatars(tempAvatars);
-        setLoading(false);
+        dispatch(userActions.setAvatars(tempAvatars));
+        dispatch(userActions.setAvatarLoading(false));
       } catch (error) {
         toast.error("Error fetching avatars", toastOptions);
       }
@@ -95,10 +100,12 @@ const SetAvatar = () => {
                   <img
                     src={`data:image/svg+xml;base64,${avatar}`}
                     alt="avatar"
-                    onClick={() => setSelectedAvatar(index)}
+                    onClick={() =>
+                      dispatch(userActions.setSelectedAvatar(index))
+                    }
                     onKeyDown={(event) => {
                       if (event.key === "Enter") {
-                        setSelectedAvatar(index);
+                        dispatch(userActions.setSelectedAvatar(index));
                       }
                     }}
                   />

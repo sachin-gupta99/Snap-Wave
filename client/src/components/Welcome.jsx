@@ -1,9 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import welcomeLogo from "../assets/welcome.gif";
-import PropTypes from "prop-types";
 import classes from "./Welcome.module.css";
 
-const Welcome = ({ username }) => {
+const Welcome = () => {
+  const userData = useSelector((state) => state.user.user);
+
   return (
     <div className={classes["welcome__container"]}>
       <img
@@ -11,7 +14,9 @@ const Welcome = ({ username }) => {
         alt="welcome"
         className={classes["welcome__logo"]}
       />
-      <h1 className={classes["welcome__heading"]}>Welcome {`${username}`}</h1>
+      <h1 className={classes["welcome__heading"]}>
+        Welcome {`${userData ? userData.username : "Username"}`}
+      </h1>
       <h3 className={classes["welcome__subheading"]}>
         Please select a chat to Start messaging
       </h3>
@@ -20,7 +25,3 @@ const Welcome = ({ username }) => {
 };
 
 export default Welcome;
-
-Welcome.propTypes = {
-  username: PropTypes.string.isRequired,
-};

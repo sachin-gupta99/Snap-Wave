@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import sampleAvatar from "../assets/sample-avatar.jpg";
-import classes from "./Contacts.module.css";
 import cx from "classnames";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+
+import sampleAvatar from "../assets/sample-avatar.jpg";
+import classes from "./Contacts.module.css";
 
 const Contacts = ({ index, contact, onClick, className }) => {
   const userOnline = useSelector((state) => state.user.userOnline);

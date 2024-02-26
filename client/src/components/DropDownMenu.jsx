@@ -7,6 +7,7 @@ import { CiEdit } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 import { uiActions } from "../store/ui";
 import { userActions } from "../store/user";
@@ -14,10 +15,9 @@ import { getAuthToken, removeAuthToken } from "../utils/utility";
 import { getUserRoute } from "../api/userApi";
 import socket from "../socket";
 import { router } from "../App";
-import classes from "./DropDownMenu.module.css";
 import { logoutRoute } from "../api/authApi";
-import { toast } from "react-toastify";
 import { toastOptions } from "../utils/utility";
+import classes from "./DropDownMenu.module.css";
 
 const DropDownMenu = () => {
   const dispatch = useDispatch();
@@ -119,13 +119,13 @@ const DropDownMenu = () => {
   );
 };
 
-function DropdownItem(props) {
+const DropdownItem = (props) => {
   return (
     <li className={classes["dropdownItem"]} onClick={props.onClick}>
       <props.icon />
       <span> {props.text} </span>
     </li>
   );
-}
+};
 
 export default DropDownMenu;

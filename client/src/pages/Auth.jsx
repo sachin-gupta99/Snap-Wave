@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { toast } from "react-toastify";
 import { Link, redirect, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { registerRoute, loginRoute, verifyTokenRoute } from "../api/authApi";
 import { getAuthToken, setAuthToken, toastOptions } from "../utils/utility";
 import Logo from "../assets/logo.png";
-import "./Auth.css";
-import "react-toastify/dist/ReactToastify.css";
 import { router } from "../App";
+import "./Auth.css";
 
 const AuthPage = () => {
   const [params] = useSearchParams();

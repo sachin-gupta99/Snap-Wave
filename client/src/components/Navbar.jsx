@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
 import logo from "../assets/logo.png";
-import "react-toastify/dist/ReactToastify.css";
-import classes from "./Navbar.module.css";
 import DropDownMenu from "./DropDownMenu";
 import { uiActions } from "../store/ui";
+import classes from "./Navbar.module.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();

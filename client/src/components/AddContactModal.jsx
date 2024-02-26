@@ -1,10 +1,11 @@
 import React from "react";
-import classes from "./AddContactModal.module.css";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
-import BeatLoader from "react-spinners/BeatLoader";
 import { useSelector } from "react-redux";
+
+import BeatLoader from "react-spinners/BeatLoader";
 import sampleAvatar from "../assets/sample-avatar.jpg";
+import classes from "./AddContactModal.module.css";
 
 const override = {
   justifyContent: "center",
