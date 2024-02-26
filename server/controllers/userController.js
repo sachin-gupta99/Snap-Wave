@@ -175,3 +175,28 @@ exports.addContact = async (req, res) => {
     });
   }
 };
+
+exports.getContacts = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findById({ _id: userId }).populate(
+      "contacts",
+      "username email avatarImage isOnline"
+    );
+    if (!user) {
+      return res.json({
+        status: "failed",
+        message: "User not found",
+      });
+    }
+    res.json({
+      status: "success",
+      contacts: user.contacts,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};

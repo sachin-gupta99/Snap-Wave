@@ -23,6 +23,7 @@ const AddContact = () => {
     });
     if (currentUser.data.status === "success") {
       toast.success("Contact added successfully", toastOptions);
+      dispatch(userActions.addUserContacts(currentUser.data.user));
       inputRef.current.value = "";
     } else if (currentUser.data.message === "Contact already added") {
       toast.error("Contact already added", toastOptions);
@@ -31,8 +32,6 @@ const AddContact = () => {
       toast.error("Error adding contact", toastOptions);
     }
     dispatch(uiActions.setContactModal(false));
-    dispatch(userActions.addUserContacts(currentUser.data.user));
-    // console.log(currentUser.data.user);
   };
 
   const handleSubmit = async (e) => {
@@ -50,7 +49,6 @@ const AddContact = () => {
     dispatch(userActions.setContactSearchLoading(true));
 
     const response = await searchUserRoute(email);
-    console.log(response.data);
 
     dispatch(userActions.setContactSearchLoading(false));
 
@@ -84,7 +82,6 @@ const AddContact = () => {
       toast.dismiss(loading);
       dispatch(uiActions.setContactModal(true));
       dispatch(userActions.setSearchContact(response.data.user));
-      console.log(response.data.user);
     }
   };
 
