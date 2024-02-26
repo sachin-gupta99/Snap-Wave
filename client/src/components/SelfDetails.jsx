@@ -36,8 +36,10 @@ const SelfDetails = () => {
         <img
           src={
             userData
-              ? `data:image/svg+xml;base64,${userData.avatarImage}`
-              : sampleAvatar
+              ? userData.avatarImage
+                ? `data:image/svg+xml;base64,${userData.avatarImage}`
+                : "https://www.gravatar.com/avatar/000?d=mp"
+              : "https://www.gravatar.com/avatar/000?d=mp"
           }
           alt="avatar"
         />
