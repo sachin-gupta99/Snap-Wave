@@ -23,3 +23,7 @@ export const searchUserRoute = (email) => {
 export const getUserBasicRoute = (userId) => {
   return axiosInstance.get(`/api/user/user/basic/${userId}`);
 };
+
+export const getContactsRoute = (userId) => {
+  return axiosInstance.get(`/api/user/contacts/${userId}`);
+};
