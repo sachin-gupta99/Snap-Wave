@@ -61,8 +61,7 @@ exports.getUser = async (req, res) => {
         "isOnline",
         "_id",
       ])
-      .populate("contacts")
-      .select(["username", "avatarImage", "isOnline", "_id"]);
+      .populate("contacts", "username email avatarImage isOnline");
     if (!user) {
       return res.json({
         status: "failed",
@@ -161,7 +160,13 @@ exports.addContact = async (req, res) => {
     await contact.save();
     res.json({
       status: "success",
-      user,
+      user: {
+        avatarImage: contact.avatarImage,
+        username: contact.username,
+        email: contact.email,
+        isOnline: contact.isOnline,
+        _id: contact._id,
+      },
     });
   } catch (error) {
     res.json({

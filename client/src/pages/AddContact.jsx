@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import classes from "./AddContact.module.css";
 import AddContactModal from "../components/AddContactModal";
 import { toast } from "react-toastify";
@@ -6,18 +6,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { getAuthToken, toastOptions } from "../utils/utility";
 import { jwtDecode } from "jwt-decode";
 import { addContactRoute, searchUserRoute } from "../api/userApi";
+import { useSelector, useDispatch } from "react-redux";
+import { uiActions } from "../store/ui";
+import { userActions } from "../store/user";
 
 const AddContact = () => {
-  const [modal, setModal] = useState(false);
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const modal = useSelector((state) => state.ui.contactModal);
   const inputRef = useRef();
   const token = getAuthToken();
   const decodedToken = jwtDecode(token);
 
-  const addContactHandler = async (e) => {
-    e.preventDefault();
+  const addContactHandler = async (userId) => {
     const currentUser = await addContactRoute(decodedToken._id, {
-      contactId: user._id,
+      contactId: userId,
     });
     if (currentUser.data.status === "success") {
       toast.success("Contact added successfully", toastOptions);
@@ -28,7 +30,9 @@ const AddContact = () => {
     } else {
       toast.error("Error adding contact", toastOptions);
     }
-    setModal(false);
+    dispatch(uiActions.setContactModal(false));
+    dispatch(userActions.addUserContacts(currentUser.data.user));
+    // console.log(currentUser.data.user);
   };
 
   const handleSubmit = async (e) => {
@@ -43,8 +47,12 @@ const AddContact = () => {
     }
 
     const loading = toast.loading("Searching user", toastOptions);
+    dispatch(userActions.setContactSearchLoading(true));
 
     const response = await searchUserRoute(email);
+    console.log(response.data);
+
+    dispatch(userActions.setContactSearchLoading(false));
 
     if (response.data.status === "failed") {
       toast.update(loading, {
@@ -74,13 +82,14 @@ const AddContact = () => {
       return;
     } else {
       toast.dismiss(loading);
-      setModal(true);
-      setUser(response.data.user);
+      dispatch(uiActions.setContactModal(true));
+      dispatch(userActions.setSearchContact(response.data.user));
+      console.log(response.data.user);
     }
   };
 
   const onClose = () => {
-    setModal(false);
+    dispatch(uiActions.setContactModal(false));
   };
 
   return (
@@ -88,7 +97,6 @@ const AddContact = () => {
       {modal && (
         <AddContactModal
           onClose={onClose}
-          user={user}
           addContactHandler={addContactHandler}
         />
       )}

@@ -1,25 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import cx from "classnames";
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import BeatLoader from "react-spinners/BeatLoader";
+import "react-toastify/dist/ReactToastify.css";
 
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import ChatInput from "./ChatInput";
 import { getMessagesRoute, sendMessageRoute } from "../api/messageApi";
 import { toastOptions } from "../utils/utility";
 import classes from "./ChatContainer.module.css";
-import "react-toastify/dist/ReactToastify.css";
-import BeatLoader from "react-spinners/BeatLoader";
+import { messagesActions } from "../store/messages";
+import socket from "../socket";
 
-const ChatContainer = ({ currentChat, currentUser, socket }) => {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+const ChatContainer = ({ currentChat, currentUser }) => {
+  const dispatch = useDispatch();
+  const messages = useSelector((state) => state.messages.messages);
+  const loading = useSelector((state) => state.messages.messagesLoading);
+  const arrivalMessage = useSelector((state) => state.messages.arrivalMessage);
 
   const scrollRef = useRef();
   useEffect(() => {
-    setLoading(true);
+    dispatch(messagesActions.setMessagesLoading(true));
     const fetchMessages = async () => {
       if (currentChat) {
         const response = await getMessagesRoute({
@@ -28,7 +32,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         });
 
         if (response.data.status === "success")
-          setMessages(response.data.messages);
+          dispatch(messagesActions.setMessages(response.data.messages));
         else {
           toast.error(
             "Error fetching messages. Please logout and sign in again",
@@ -36,12 +40,13 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
           );
         }
       }
-      setLoading(false);
+      dispatch(messagesActions.setMessagesLoading(false));
     };
     fetchMessages();
-  }, [currentChat, currentUser]);
+  }, [currentChat, currentUser, dispatch]);
 
   const handleSendMsg = async (msg) => {
+    const currentSocket = socket.current;
     const sendingMsg = await sendMessageRoute({
       from: currentUser._id,
       to: currentChat._id,
@@ -49,15 +54,12 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
     });
 
     if (sendingMsg.data.status === "success") {
-      socket.current.emit("send-msg", {
+      currentSocket.emit("send-msg", {
         to: currentChat._id,
         from: currentUser._id,
         message: msg,
       });
-
-      const msgs = [...messages];
-      msgs.push({ fromSelf: true, message: msg });
-      setMessages(msgs);
+      dispatch(messagesActions.addMessage({ fromSelf: true, message: msg }));
     } else {
       toast.error(
         "Error sending message. Please logout and sign in again",
@@ -67,22 +69,25 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   };
 
   useEffect(() => {
-    if (socket.current) {
-      socket.current.on("receive-msg", (msg, receiver) => {
-        setArrivalMessage({
-          fromSelf: false,
-          message: msg,
-          receiver: receiver,
-        });
+    const currentSocket = socket.current;
+    if (currentSocket) {
+      currentSocket.on("receive-msg", (msg, receiver) => {
+        dispatch(
+          messagesActions.setArrivalMessage({
+            fromSelf: false,
+            message: msg,
+            receiver: receiver,
+          })
+        );
       });
     }
-  }, [socket]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (arrivalMessage && currentChat._id === arrivalMessage.receiver) {
-      setMessages((prev) => [...prev, arrivalMessage]);
+      dispatch(messagesActions.addMessage(arrivalMessage));
     }
-  }, [arrivalMessage, currentChat._id]);
+  }, [arrivalMessage, currentChat._id, dispatch]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -165,10 +170,10 @@ ChatContainer.propTypes = {
     username: PropTypes.string,
   }).isRequired,
 
-  socket: PropTypes.shape({
-    current: PropTypes.shape({
-      emit: PropTypes.func,
-      on: PropTypes.func,
-    }),
-  }).isRequired,
+  // socket: PropTypes.shape({
+  //   current: PropTypes.shape({
+  //     emit: PropTypes.func,
+  //     on: PropTypes.func,
+  //   }),
+  // }).isRequired,
 };

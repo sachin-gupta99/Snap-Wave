@@ -1,61 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import { Link, useNavigate, redirect, useSearchParams } from "react-router-dom";
+import { Link, redirect, useSearchParams } from "react-router-dom";
 
-import {
-  registerRoute,
-  loginRoute,
-  verifyTokenRoute,
-} from "../api/authApi";
+import { registerRoute, loginRoute, verifyTokenRoute } from "../api/authApi";
 import { getAuthToken, setAuthToken, toastOptions } from "../utils/utility";
 import Logo from "../assets/logo.png";
 import "./Auth.css";
 import "react-toastify/dist/ReactToastify.css";
+import { router } from "../App";
 
 const AuthPage = () => {
   const [params] = useSearchParams();
   const mode = params.get("mode");
-  const navigate = useNavigate();
-  const [values, setValues] = useState(
-    mode === "login"
-      ? {
-          username: "",
-          password: "",
-        }
-      : {
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        }
-  );
+  const emailRef = useRef();
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
 
   useEffect(() => {
     if (mode !== "login" && mode !== "register") {
-      navigate("/auth?mode=login");
+      router.navigate("/auth?mode=login");
     }
-  }, [mode, navigate]);
+  }, [mode]);
 
   useEffect(() => {
     const userToken = getAuthToken();
     if (userToken) {
-      navigate("/");
+      router.navigate("/");
     }
-  }, [navigate]);
-
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {
       let registeredUser;
       if (mode === "login") {
-        const { username, password } = values;
+        const { username, password } = {
+          username: usernameRef.current.value,
+          password: passwordRef.current.value,
+        };
         registeredUser = await loginRoute({ username, password });
       } else {
-        const { username, email, password } = values;
+        const { username, email, password } = {
+          username: usernameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        };
         registeredUser = await registerRoute({ username, email, password });
       }
 
@@ -64,22 +54,16 @@ const AuthPage = () => {
           `User ${mode === "login" ? "logged in" : "registered"} successfully"`,
           toastOptions
         );
-        setValues(
-          mode === "login"
-            ? {
-                username: "",
-                password: "",
-              }
-            : {
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-              }
-        );
 
+        usernameRef.current.value = "";
+        passwordRef.current.value = "";
+
+        if (mode === "register") {
+          emailRef.current.value = "";
+          confirmPasswordRef.current.value = "";
+        }
         setAuthToken(registeredUser.data.token);
-        navigate("/");
+        router.navigate("/");
       } else {
         toast.error(registeredUser.data.message, toastOptions);
       }
@@ -88,7 +72,10 @@ const AuthPage = () => {
 
   const handleValidation = () => {
     if (mode === "login") {
-      const { username, password } = values;
+      const { username, password } = {
+        username: usernameRef.current.value,
+        password: passwordRef.current.value,
+      };
       if (username.length < 3) {
         toast.error(
           "Username must be at least 3 characters long",
@@ -103,7 +90,12 @@ const AuthPage = () => {
         return false;
       }
     } else {
-      const { username, email, password, confirmPassword } = values;
+      const { username, email, password, confirmPassword } = {
+        username: usernameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+        confirmPassword: confirmPasswordRef.current.value,
+      };
       if (password !== confirmPassword) {
         toast.error("Passwords do not match", toastOptions);
         return false;
@@ -144,10 +136,9 @@ const AuthPage = () => {
           type="text"
           id="username"
           name="username"
-          value={values.username}
+          ref={usernameRef}
           placeholder="Username"
           title="Enter you Username"
-          onChange={handleChange}
           required
         />
         {mode === "register" && (
@@ -155,10 +146,9 @@ const AuthPage = () => {
             type="text"
             id="email"
             name="email"
-            value={values.email}
+            ref={emailRef}
             placeholder="Email"
             title="Enter you Email"
-            onChange={handleChange}
             required
           />
         )}
@@ -166,10 +156,9 @@ const AuthPage = () => {
           type="password"
           id="password"
           name="password"
-          value={values.password}
+          ref={passwordRef}
           placeholder="Password"
           title="Enter you Password"
-          onChange={handleChange}
           required
         />
         {mode === "register" && (
@@ -177,10 +166,9 @@ const AuthPage = () => {
             type="password"
             id="confirmPassword"
             name="confirmPassword"
-            value={values.confirmPassword}
+            ref={confirmPasswordRef}
             placeholder="Confirm Password"
             title="Enter you Password"
-            onChange={handleChange}
             required
           />
         )}
