@@ -3,16 +3,11 @@ import sampleAvatar from "../assets/sample-avatar.jpg";
 import classes from "./Contacts.module.css";
 import cx from "classnames";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const Contacts = ({
-  index,
-  contact,
-  onClick,
-  userOnline,
-  className,
-  socket,
-}) => {
-  console.log(userOnline);
+const Contacts = ({ index, contact, onClick, className }) => {
+  const userOnline = useSelector((state) => state.user.userOnline);
+  const userOffline = useSelector((state) => state.user.userOffline);
   const handleClick = () => {
     onClick(index);
   };
@@ -25,42 +20,22 @@ const Contacts = ({
 
   useEffect(() => {
     if (userOnline.includes(contact._id)) {
-      console.log(contact._id);
       const status = document.getElementById(contact._id);
-      if (status) {
+
+      if (status.classList.contains(classes["offline-status"])) {
         status.classList.remove(classes["offline-status"]);
         status.classList.add(classes["online-status"]);
       }
-    } else {
-      if (!contact.isOnline) {
-        const status = document.getElementById(contact._id);
-        if (status) {
-          status.classList.remove(classes["online-status"]);
-          status.classList.add(classes["offline-status"]);
-        }
-      }
-    }
-  }, [contact, userOnline]);
-  //   socket.current.on("user-online", (userId) => {
-  //     if (contact._id === userId) {
-  //       const status = document.getElementById(contact._id);
-  //       if (status) {
-  //         status.classList.remove(classes["offline-status"]);
-  //         status.classList.add(classes["online-status"]);
-  //       }
-  //     }
-  //   });
+    } else if (userOffline.includes(contact._id)) {
+      const status = document.getElementById(contact._id);
 
-  //   socket.current.on("user-offline", (userId) => {
-  //     if (contact._id === userId) {
-  //       const status = document.getElementById(contact._id);
-  //       if (status) {
-  //         status.classList.remove(classes["online-status"]);
-  //         status.classList.add(classes["offline-status"]);
-  //       }
-  //     }
-  //   });
-  // }, [contact, socket]);
+      if (status.classList.contains(classes["online-status"])) {
+        status.classList.remove(classes["online-status"]);
+        status.classList.add(classes["offline-status"]);
+      }
+      
+    }
+  }, [contact, userOnline, userOffline]);
 
   return (
     <button

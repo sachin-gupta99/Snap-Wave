@@ -26,7 +26,7 @@ const SetAvatar = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("Profile picture set successfully", toastOptions);
+        toast.success("Profile picture set successfully. Please reload to see the effect", toastOptions);
         navigate("/");
       } else {
         toast.error("Error setting profile picture", toastOptions);
@@ -39,7 +39,7 @@ const SetAvatar = () => {
   useEffect(() => {
     const user = getAuthToken();
     if (!user) {
-      navigate("/login");
+      navigate("/auth?mode=login");
     }
   }, [navigate]);
 

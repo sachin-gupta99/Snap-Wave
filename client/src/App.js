@@ -1,42 +1,39 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useMemo } from "react";
+import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 
 import AuthPage, { LoginLoader } from "./pages/Auth";
 import Chat from "./pages/Chat";
 import SetAvatar from "./pages/SetAvatar";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import AddContact from "./pages/AddContact";
 import socket from "./socket";
+import { userActions } from "./store/user";
 
 let router;
 
 const App = () => {
-  const [userOnline, setUserOnline] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
-    // const onUserOnline = ;
-
-    const onUserOffline = (userId) => {
-      setUserOnline((prev) => prev.filter((id) => id !== userId));
+    const onUserOnline = (userId) => {
+      if (userId) {
+        dispatch(userActions.addUserOnline(userId));
+        dispatch(userActions.removeUserOffline(userId));
+      }
     };
 
-    socket.current.on("user-online", (userId) => {
+    const onUserOffline = (userId) => {
       if (userId) {
-        setUserOnline((prev) => {
-          if (!prev.includes(userId)) {
-            console.log([...prev, userId]);
-            return [...prev, userId];
-          }
-          return prev;
-        });
-        // setUserOnline(["65d03e88a53075016b4ec66e", "60d03e88a53075016b4ec66e"]);
+        dispatch(userActions.removeUserOnline(userId));
+        dispatch(userActions.addUserOffline(userId));
       }
-    });
-    socket.current.on("user-offline", (userId) => onUserOffline(userId));
+    };
+
+    socket.current.on("user-online", onUserOnline);
+    socket.current.on("user-offline", onUserOffline);
 
     return () => {
       if (socket.current.readyState === 1) {
@@ -44,7 +41,7 @@ const App = () => {
         socket.current.off("user-offline");
       }
     };
-  }, []);
+  }, [dispatch]);
 
   router = createBrowserRouter([
     {
@@ -65,7 +62,7 @@ const App = () => {
           path: "/chat",
           element: (
             <ProtectedRoute>
-              <Chat userOnline={userOnline} socket={socket} />
+              <Chat />
             </ProtectedRoute>
           ),
         },

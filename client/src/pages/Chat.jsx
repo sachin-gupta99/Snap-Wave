@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useMemo } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-
-import { getUserBasicRoute, getUserRoute } from "../api/userApi";
-import { getAuthToken, removeAuthToken, toastOptions } from "../utils/utility";
 import BeatLoader from "react-spinners/BeatLoader";
-import Contacts from "../components/Contacts";
+
+import { getUserRoute } from "../api/userApi";
+import { getAuthToken, removeAuthToken } from "../utils/utility";
 import sampleAvatar from "../assets/sample-avatar.jpg";
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
-import "./Chat.css";
-import { toast } from "react-toastify";
 import { router } from "../App";
+import { userActions } from "../store/user";
+import AllContacts from "../components/AllContacts";
+import "./Chat.css";
 
 const override1 = {
   position: "absolute",
@@ -34,56 +34,49 @@ const override3 = {
   borderColor: "red",
 };
 
-const Chat = ({ userOnline, socket }) => {
-  console.log("Chat -> userOnline", userOnline);
+const Chat = () => {
+  const dispatch = useDispatch();
   const user = useMemo(() => jwtDecode(getAuthToken()), []);
-  const [contacts, setContacts] = useState([]);
-  const [contactLoading, setContactLoading] = useState(true);
-  const [userDataLoading, setUserDataLoading] = useState(true);
-  const [userData, setUserData] = useState({});
-  const [selectedIndex, setSelectedIndex] = useState(undefined);
-  const [currentChat, setCurrentChat] = useState(contacts[selectedIndex] || {});
-  // const navigate = useNavigate();
-
-  const handleContactClick = async (index) => {
-    const currentChatSelected = await getUserBasicRoute(contacts[index]._id);
-
-    if (currentChatSelected.data.status === "failed") {
-      toast.error("Something went wrong. Please Sign in again", toastOptions);
-      removeAuthToken();
-      router.navigate("/auth?mode=login");
-      // navigate("/");
-    } else {
-      setCurrentChat(currentChatSelected.data.user);
-    }
-    setSelectedIndex(index);
-  };
+  const contacts = useSelector((state) => state.user.contacts);
+  const contactLoading = useSelector((state) => state.user.contactsLoading);
+  const userDataLoading = useSelector((state) => state.user.userDataLoading);
+  const userData = useSelector((state) => state.user.user);
+  const selectedIndex = useSelector((state) => state.user.selectedContactIndex);
+  const currentChat = useSelector((state) => state.user.currentChat);
 
   useEffect(() => {
-    setUserDataLoading(true);
+    dispatch(userActions.setUserDataLoading(true));
     const fetchUser = async () => {
       try {
-        const response = await getUserRoute(user._id);
-        console.log(response.data.user);
-        if (response.data.status === "success") {
-          setUserData(response.data.user);
-          setContacts(response.data.user.contacts);
-          setContactLoading(false);
+        if (userData && contacts) {
+          dispatch(userActions.setUserContactsLoading(false));
+          dispatch(userActions.setUserDataLoading(false));
+          dispatch(userActions.setUserContacts(userData.contacts));
+          dispatch(userActions.setUserContactsLoading(false));
         } else {
-          removeAuthToken();
-          router.navigate("/auth?mode=login");
-          // navigate("/");
+          const response = await getUserRoute(user._id);
+          if (response.data.status === "failed") {
+            removeAuthToken();
+            router.navigate("/auth?mode=login");
+          } else {
+            dispatch(userActions.setUserData(response.data.user));
+            dispatch(userActions.setUserContactsLoading(false));
+            dispatch(userActions.setUserContacts(response.data.user.contacts));
+            dispatch(userActions.setUserDataLoading(false));
+          }
         }
-        setUserDataLoading(false);
       } catch (err) {
         removeAuthToken();
         router.navigate("/auth?mode=login");
-        // navigate("/");
-        setUserDataLoading(false);
+        dispatch(userActions.setUserDataLoading(false));
       }
     };
     fetchUser();
-  }, [user]);
+
+    return () => {
+      dispatch(userActions.setSelectedContactIndex(undefined));
+    };  
+  }, [userData, contacts, user, dispatch]);
 
   return (
     <div className="chat-container-main">
@@ -106,17 +99,7 @@ const Chat = ({ userOnline, socket }) => {
               } else if (contacts.length === 0) {
                 return <div>No contacts found</div>;
               } else {
-                return contacts.map((contact, index) => (
-                  <Contacts
-                    key={contact._id}
-                    contact={contact}
-                    index={index}
-                    userOnline={userOnline}
-                    className={index === selectedIndex ? "selected" : ""}
-                    onClick={handleContactClick}
-                    socket={socket}
-                  />
-                ));
+                return <AllContacts />;
               }
             })()}
           </div>
@@ -172,7 +155,7 @@ const Chat = ({ userOnline, socket }) => {
                 <ChatContainer
                   currentChat={currentChat}
                   currentUser={userData}
-                  socket={socket}
+                  // socket={socket}
                 />
               )}
             </>
