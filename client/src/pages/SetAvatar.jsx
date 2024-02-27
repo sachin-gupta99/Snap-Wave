@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Buffer } from "buffer";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
@@ -8,17 +8,13 @@ import loader from "../assets/loader.gif";
 import { setAvatarRoute } from "../api/userApi";
 import { getAuthToken, toastOptions } from "../utils/utility";
 import "./SetAvatar.css";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { userActions } from "../store/user";
 import { router } from "../App";
 
 const SetAvatar = () => {
   const AvatarAPI = "https://api.multiavatar.com/";
-  const dispatch = useDispatch();
-  const avatars = useSelector((state) => state.user.avatars);
-  const loading = useSelector((state) => state.user.avatarLoading);
-  const selectedAvatar = useSelector((state) => state.user.selectedAvatar);
+  const [avatars, setAvatars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedAvatar, setSelectedAvatar] = useState();
 
   const setProfilePicture = async () => {
     try {
@@ -65,8 +61,8 @@ const SetAvatar = () => {
           const buffer = Buffer.from(image.data).toString("base64");
           tempAvatars.push(buffer);
         }
-        dispatch(userActions.setAvatars(tempAvatars));
-        dispatch(userActions.setAvatarLoading(false));
+        setAvatars(tempAvatars);
+        setLoading(false);
       } catch (error) {
         toast.error("Error fetching avatars", toastOptions);
       }
@@ -100,12 +96,10 @@ const SetAvatar = () => {
                   <img
                     src={`data:image/svg+xml;base64,${avatar}`}
                     alt="avatar"
-                    onClick={() =>
-                      dispatch(userActions.setSelectedAvatar(index))
-                    }
+                    onClick={() => setSelectedAvatar(index)}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") {
-                        dispatch(userActions.setSelectedAvatar(index));
+                        setSelectedAvatar(index);
                       }
                     }}
                   />
