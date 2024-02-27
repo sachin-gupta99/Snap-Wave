@@ -38,10 +38,6 @@ const App = () => {
     return () => {
       socket.current.off("user-online");
       socket.current.off("user-offline");
-
-      // if(socket.current.readyState === 1) socket.current.disconnect();
-      // socket.current.off("user-online");
-      // socket.current.off("user-offline");
     };
   }, [dispatch]);
 

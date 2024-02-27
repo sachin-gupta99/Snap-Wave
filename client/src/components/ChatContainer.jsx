@@ -27,17 +27,19 @@ const ChatContainer = ({ currentUser }) => {
   const [status, setStatus] = useState("offline");
 
   useEffect(() => {
-    if (userOffline.includes(currentChat._id) && !userOnline.includes(currentChat._id)) {
-      console.log("1st case");
+    if (
+      userOffline.includes(currentChat._id) &&
+      !userOnline.includes(currentChat._id)
+    ) {
       setStatus("offline");
-    } else if (userOnline.includes(currentChat._id) && !userOffline.includes(currentChat._id)) {
-      console.log("2nd case");
+    } else if (
+      userOnline.includes(currentChat._id) &&
+      !userOffline.includes(currentChat._id)
+    ) {
       setStatus("online");
     } else if (currentChat.isOnline) {
-      console.log("3rd case");
       setStatus("online");
     } else if (!currentChat.isOnline) {
-      console.log("4th case");
       setStatus("offline");
     }
   }, [userOnline, userOffline, currentChat]);
