@@ -1,35 +1,20 @@
-import React, { useRef, useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "react-toastify";
-import PropTypes from "prop-types";
+import React, { useRef, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import { getAuthToken, removeAuthToken, toastOptions } from "../utils/utility";
-import { logoutRoute } from "../api/authApi";
 import logo from "../assets/logo.png";
-import "react-toastify/dist/ReactToastify.css";
-import classes from "./Navbar.module.css";
 import DropDownMenu from "./DropDownMenu";
+import { uiActions } from "../store/ui";
+import classes from "./Navbar.module.css";
 
-const Navbar = ({ socket, user }) => {
+const Navbar = () => {
+  const dispatch = useDispatch();
   const menuRef = useRef();
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const onLogout = async () => {
-    const token = getAuthToken();
-    const decodedToken = jwtDecode(token);
-    removeAuthToken();
-    await logoutRoute(decodedToken._id);
-    socket.current.disconnect();
-    toast.success("Logged out successfully", toastOptions);
-    navigate("/auth?mode=login");
-  };
 
   useEffect(() => {
     let handler = (e) => {
       if (!menuRef.current.contains(e.target)) {
-        setOpen(false);
+        dispatch(uiActions.setNavbarDropdown(false));
       }
     };
 
@@ -82,12 +67,7 @@ const Navbar = ({ socket, user }) => {
           </li>
         </ul>
         <div className={classes["menu-container"]} ref={menuRef}>
-          <DropDownMenu
-            user={user}
-            setOpen={setOpen}
-            open={open}
-            onLogout={onLogout}
-          />
+          <DropDownMenu />
         </div>
       </div>
     </div>
@@ -95,11 +75,3 @@ const Navbar = ({ socket, user }) => {
 };
 
 export default Navbar;
-
-Navbar.propTypes = {
-  socket: PropTypes.shape({
-    current: PropTypes.shape({
-      disconnect: PropTypes.func.isRequired,
-    }),
-  }),
-};

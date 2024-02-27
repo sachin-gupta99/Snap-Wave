@@ -57,8 +57,8 @@ io.on("connection", (socket) => {
   global.chatSocket = socket;
   socket.on("add-user", async (userId) => {
     onlineUsers.set(userId, socket.id);
-    await User.findByIdAndUpdate(userId, { isOnline: true });
     socket.broadcast.emit("user-online", userId);
+    await User.findByIdAndUpdate(userId, { isOnline: true });
   });
 
   socket.on("send-msg", (data) => {
@@ -72,8 +72,8 @@ io.on("connection", (socket) => {
     for (let [key, value] of onlineUsers.entries()) {
       if (value === socket.id) {
         onlineUsers.delete(key);
-        await User.findByIdAndUpdate(key, { isOnline: false });
         socket.broadcast.emit("user-offline", key);
+        await User.findByIdAndUpdate(key, { isOnline: false });
       }
     }
   });

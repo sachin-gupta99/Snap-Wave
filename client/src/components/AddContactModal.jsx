@@ -1,8 +1,11 @@
 import React from "react";
-import classes from "./AddContactModal.module.css";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+
 import BeatLoader from "react-spinners/BeatLoader";
+import sampleAvatar from "../assets/sample-avatar.jpg";
+import classes from "./AddContactModal.module.css";
 
 const override = {
   justifyContent: "center",
@@ -12,7 +15,10 @@ const Backdrop = ({ onClose }) => {
   return <div className={classes["modal-backdrop"]} onClick={onClose}></div>;
 };
 
-const Modal = ({ onClose, user, loading, addContactHandler }) => {
+const Modal = ({ onClose, addContactHandler }) => {
+  const loading = useSelector((state) => state.user.contactSearchLoading);
+  const contact = useSelector((state) => state.user.searchedContact);
+
   return (
     <div className={classes["modal"]}>
       {loading ? (
@@ -24,15 +30,23 @@ const Modal = ({ onClose, user, loading, addContactHandler }) => {
           data-testid="loader"
         />
       ) : (
-        <div className={classes["user-container"]} key={user._id}>
+        <div className={classes["user-container"]}>
           <div className={classes.avatar}>
             <img
-              src={`data:image/svg+xml;base64,${user.avatarImage}`}
+              src={
+                contact
+                  ? `data:image/svg+xml;base64,${contact.avatarImage}`
+                  : sampleAvatar
+              }
               alt="user-avatar"
             />
           </div>
-          <span className={classes["user-username"]}>{user.username}</span>
-          <span className={classes["user-email"]}>{user.email}</span>
+          <span className={classes["user-username"]}>
+            {contact ? contact.username : "Username"}
+          </span>
+          <span className={classes["user-email"]}>
+            {contact ? contact.email : "Email"}
+          </span>
         </div>
       )}
 
@@ -42,7 +56,7 @@ const Modal = ({ onClose, user, loading, addContactHandler }) => {
         </button>
         <button
           className={classes["submit-button"]}
-          onClick={addContactHandler}
+          onClick={() => addContactHandler(contact._id)}
         >
           Add user
         </button>
@@ -53,17 +67,12 @@ const Modal = ({ onClose, user, loading, addContactHandler }) => {
 
 const portalElement = document.getElementById("overlay");
 
-const AddContactModal = ({ onClose, user, loading, addContactHandler }) => {
+const AddContactModal = ({ onClose, addContactHandler }) => {
   return (
     <>
       {ReactDOM.createPortal(<Backdrop onClose={onClose} />, portalElement)}
       {ReactDOM.createPortal(
-        <Modal
-          onClose={onClose}
-          user={user}
-          loading={loading}
-          addContactHandler={addContactHandler}
-        />,
+        <Modal onClose={onClose} addContactHandler={addContactHandler} />,
         portalElement
       )}
     </>
@@ -74,12 +83,6 @@ export default AddContactModal;
 
 AddContactModal.propTypes = {
   onClose: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    avatarImage: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-  }).isRequired,
   addContactHandler: PropTypes.func.isRequired,
 };
 
@@ -89,6 +92,5 @@ Backdrop.propTypes = {
 
 Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
   addContactHandler: PropTypes.func.isRequired,
 };
