@@ -20,21 +20,26 @@ const Contacts = ({ index, contact, onClick, className }) => {
   };
 
   useEffect(() => {
-    if (userOnline.includes(contact._id)) {
+    if (
+      userOnline.includes(contact._id) &&
+      !userOffline.includes(contact._id)
+    ) {
       const status = document.getElementById(contact._id);
 
       if (status.classList.contains(classes["offline-status"])) {
         status.classList.remove(classes["offline-status"]);
         status.classList.add(classes["online-status"]);
       }
-    } else if (userOffline.includes(contact._id)) {
+    } else if (
+      userOffline.includes(contact._id) &&
+      !userOnline.includes(contact._id)
+    ) {
       const status = document.getElementById(contact._id);
 
       if (status.classList.contains(classes["online-status"])) {
         status.classList.remove(classes["online-status"]);
         status.classList.add(classes["offline-status"]);
       }
-      
     }
   }, [contact, userOnline, userOffline]);
 

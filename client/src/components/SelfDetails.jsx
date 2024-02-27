@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BeatLoader } from "react-spinners";
 
-import sampleAvatar from "../assets/sample-avatar.jpg";
 import { userActions } from "../store/user";
 
 const override = {

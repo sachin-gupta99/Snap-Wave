@@ -38,12 +38,13 @@ const DropDownMenu = () => {
 
   const onLogout = async () => {
     const decodedToken = jwtDecode(getAuthToken());
-    removeAuthToken();
     await logoutRoute(decodedToken._id);
     socket.current.disconnect();
+    removeAuthToken();
     toast.success("Logged out successfully", toastOptions);
     router.navigate("/auth?mode=login");
     dispatch(uiActions.setNavbarDropdown(false));
+    dispatch(userActions.setUserData(null));
   };
 
   useEffect(() => {
@@ -64,15 +65,12 @@ const DropDownMenu = () => {
   }, [currentUserId, dispatch]);
 
   useEffect(() => {
-    const currentSocket = socket.current;
     if (userData) {
-      currentSocket.connect();
-      currentSocket.emit("add-user", userData._id);
+      socket.current.connect();
+      socket.current.emit("add-user", userData._id);
     }
     return () => {
-      if (currentSocket.readyState === 1) {
-        currentSocket.disconnect();
-      }
+      socket.current.disconnect();
     };
   }, [userData]);
 
