@@ -109,7 +109,6 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    console.log(req.params);
     const userId = req.params.userId;
     const user = await User.findById(userId);
     user.isOnline = false;

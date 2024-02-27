@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import cx from "classnames";
@@ -15,11 +15,34 @@ import classes from "./ChatContainer.module.css";
 import { messagesActions } from "../store/messages";
 import socket from "../socket";
 
-const ChatContainer = ({ currentChat, currentUser }) => {
+const ChatContainer = ({ currentUser }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
   const loading = useSelector((state) => state.messages.messagesLoading);
   const arrivalMessage = useSelector((state) => state.messages.arrivalMessage);
+  const userOnline = useSelector((state) => state.user.userOnline);
+  const userOffline = useSelector((state) => state.user.userOffline);
+  const currentChat = useSelector((state) => state.user.currentChat);
+
+  const [status, setStatus] = useState("offline");
+
+  useEffect(() => {
+    if (
+      userOffline.includes(currentChat._id) &&
+      !userOnline.includes(currentChat._id)
+    ) {
+      setStatus("offline");
+    } else if (
+      userOnline.includes(currentChat._id) &&
+      !userOffline.includes(currentChat._id)
+    ) {
+      setStatus("online");
+    } else if (currentChat.isOnline) {
+      setStatus("online");
+    } else if (!currentChat.isOnline) {
+      setStatus("offline");
+    }
+  }, [userOnline, userOffline, currentChat]);
 
   const scrollRef = useRef();
   useEffect(() => {
@@ -111,10 +134,10 @@ const ChatContainer = ({ currentChat, currentUser }) => {
           <div
             className={cx(
               classes["chat-status"],
-              classes[`${currentChat.isOnline ? "online-status" : ""}`]
+              classes[`${status === "online" ? "online-status" : ""}`]
             )}
           >
-            {currentChat.isOnline ? "Online" : ""}
+            {status === "online" ? "Online" : ""}
           </div>
         </div>
       </div>
@@ -158,22 +181,9 @@ const ChatContainer = ({ currentChat, currentUser }) => {
 export default ChatContainer;
 
 ChatContainer.propTypes = {
-  currentChat: PropTypes.shape({
-    _id: PropTypes.string,
-    avatarImage: PropTypes.string,
-    username: PropTypes.string,
-    isOnline: PropTypes.bool,
-  }).isRequired,
   currentUser: PropTypes.shape({
     _id: PropTypes.string,
     avatarImage: PropTypes.string,
     username: PropTypes.string,
   }).isRequired,
-
-  // socket: PropTypes.shape({
-  //   current: PropTypes.shape({
-  //     emit: PropTypes.func,
-  //     on: PropTypes.func,
-  //   }),
-  // }).isRequired,
 };

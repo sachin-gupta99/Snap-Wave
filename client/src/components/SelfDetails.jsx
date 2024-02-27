@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BeatLoader } from "react-spinners";
 
-import sampleAvatar from "../assets/sample-avatar.jpg";
 import { userActions } from "../store/user";
 
 const override = {
@@ -36,8 +35,10 @@ const SelfDetails = () => {
         <img
           src={
             userData
-              ? `data:image/svg+xml;base64,${userData.avatarImage}`
-              : sampleAvatar
+              ? userData.avatarImage
+                ? `data:image/svg+xml;base64,${userData.avatarImage}`
+                : "https://www.gravatar.com/avatar/000?d=mp"
+              : "https://www.gravatar.com/avatar/000?d=mp"
           }
           alt="avatar"
         />

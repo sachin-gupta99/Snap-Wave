@@ -36,10 +36,8 @@ const App = () => {
     socket.current.on("user-offline", onUserOffline);
 
     return () => {
-      if (socket.current.readyState === 1) {
-        socket.current.off("user-online");
-        socket.current.off("user-offline");
-      }
+      socket.current.off("user-online");
+      socket.current.off("user-offline");
     };
   }, [dispatch]);
 

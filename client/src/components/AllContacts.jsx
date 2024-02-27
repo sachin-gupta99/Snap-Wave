@@ -47,6 +47,7 @@ const AllContacts = () => {
   }, [userData, dispatch]);
 
   const handleContactClick = async (index) => {
+    if (index === selectedIndex) return;
     const currentChatSelected = await getUserBasicRoute(contacts[index]._id);
 
     if (currentChatSelected.data.status === "failed") {
