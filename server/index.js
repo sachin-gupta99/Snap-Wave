@@ -12,7 +12,7 @@ const app = express();
 app.disable("x-powered-by");
 
 let corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: "*",
   credentials: true,
   optionsSuccessStatus: 200,
 };
