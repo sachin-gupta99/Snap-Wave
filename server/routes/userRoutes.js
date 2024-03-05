@@ -2,6 +2,7 @@ const router = require('express').Router();
 const userController = require('../controllers/userController');
 const { isAuthenticated } = require('../middlewares/auth');
 
+router.get("/avatars/:id", isAuthenticated, userController.getAvatar);
 router.post("/set-avatar/:id", isAuthenticated, userController.setAvatar);
 router.get("/user/:id", isAuthenticated, userController.getUser);
 router.get("/user/basic/:id", isAuthenticated, userController.getUserBasic);

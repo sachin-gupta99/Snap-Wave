@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Buffer } from "buffer";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
+import { Buffer } from "buffer";
 
 import loader from "../assets/loader.gif";
-import { setAvatarRoute } from "../api/userApi";
+import { getAvatarRoute, setAvatarRoute } from "../api/userApi";
 import { getAuthToken, toastOptions } from "../utils/utility";
 import "./SetAvatar.css";
 import { router } from "../App";
 
 const SetAvatar = () => {
-  const AvatarAPI = "https://api.multiavatar.com/";
   const [avatars, setAvatars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState();
@@ -46,22 +44,14 @@ const SetAvatar = () => {
   }, []);
 
   useEffect(() => {
-    const crypto = window.crypto || window.Crypto;
-    const array = new Uint32Array(1);
-
     const fetchAvatars = async () => {
       try {
-        const tempAvatars = [];
-        for (let i = 0; i < 5; i++) {
-          const image = await axios.get(
-            `${AvatarAPI}${crypto.getRandomValues(array)}?apikey=${
-              process.env.MULTIAVATAR_API_KEY
-            }`
-          );
-          const buffer = Buffer.from(image.data).toString("base64");
-          tempAvatars.push(buffer);
+        const avatars = await getAvatarRoute(jwtDecode(getAuthToken())._id);
+        for(let i = 0; i < avatars.data.avatars.length; i++) {
+          const buffer = Buffer.from(avatars.data.avatars[i]).toString("base64");
+          avatars.data.avatars[i] = buffer;
         }
-        setAvatars(tempAvatars);
+        setAvatars(avatars.data.avatars);
         setLoading(false);
       } catch (error) {
         toast.error("Error fetching avatars", toastOptions);

@@ -1,5 +1,9 @@
 import axiosInstance from "./axiosInstance";
 
+export const getAvatarRoute = (userId) => {
+  return axiosInstance.get(`/api/user/avatars/${userId}`);
+};
+
 export const setAvatarRoute = (userId, avatar) => {
   return axiosInstance.post(`/api/user/set-avatar/${userId}`, avatar);
 };

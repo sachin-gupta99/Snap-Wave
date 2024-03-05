@@ -1,4 +1,29 @@
 const User = require("../models/userModel");
+const axios = require("axios");
+
+exports.getAvatar = async (req, res) => {
+  try {
+    const AvatarAPI = "https://api.multiavatar.com/";
+    const tempAvatars = [];
+    for (let i = 0; i < 5; i++) {
+      const image = await axios.get(
+        `${AvatarAPI}${Math.floor(Math.random() * 1000)}?apikey=${
+          process.env.MULTIAVATAR_API_KEY
+        }`
+      );
+      tempAvatars.push(image.data);
+    }
+    res.json({
+      status: "success",
+      avatars: tempAvatars,
+    });
+  } catch (error) {
+    res.json({
+      status: "failed",
+      message: error.data,
+    });
+  }
+};
 
 exports.setAvatar = async (req, res) => {
   try {
