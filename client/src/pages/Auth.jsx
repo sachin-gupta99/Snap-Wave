@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link, redirect, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import Typewriter from "typewriter-effect";
 import "react-toastify/dist/ReactToastify.css";
 
 import { registerRoute, loginRoute, verifyTokenRoute } from "../api/authApi";
@@ -128,64 +129,90 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="form-container">
-      <div className="form-heading">
-        <img src={Logo} alt="Logo" />
-        <span>Snap-Wave</span>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          ref={usernameRef}
-          placeholder="Username"
-          title="Enter you Username"
-          required
+    <div className="main-container-auth-page">
+      <div className="welcome-container">
+        <h1>Welcome to Snap-Wave</h1>
+        <Typewriter
+          options={{
+            strings: [
+              "Connect with your friends and family",
+              "Send requests to new connections",
+              "Play around with rich collection of emojis",
+              "Visualize the stats of your chatting activity",
+              "Get notified for new messages and requests",
+              "Enjoy chatting on Snap-Wave!",
+            ],
+            cursor: "_",
+            autoStart: true,
+            delay: 100,
+            deleteSpeed: 40,
+            stringSplitter: " ",
+            loop: true,
+            wrapperClassName: "typewriter",
+          }}
         />
-        {mode === "register" && (
+      </div>
+      <div className="form-container">
+        <div className="form-heading">
+          <img src={Logo} alt="Logo" />
+          <span>Snap-Wave</span>
+        </div>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
-            id="email"
-            name="email"
-            ref={emailRef}
-            placeholder="Email"
-            title="Enter you Email"
+            id="username"
+            name="username"
+            ref={usernameRef}
+            placeholder="Username"
+            title="Enter you Username"
             required
           />
-        )}
-        <input
-          type="password"
-          id="password"
-          name="password"
-          ref={passwordRef}
-          placeholder="Password"
-          title="Enter you Password"
-          required
-        />
-        {mode === "register" && (
+          {mode === "register" && (
+            <input
+              type="text"
+              id="email"
+              name="email"
+              ref={emailRef}
+              placeholder="Email"
+              title="Enter you Email"
+              required
+            />
+          )}
           <input
             type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            ref={confirmPasswordRef}
-            placeholder="Confirm Password"
+            id="password"
+            name="password"
+            ref={passwordRef}
+            placeholder="Password"
             title="Enter you Password"
             required
           />
-        )}
-        <button type="submit">{mode === "login" ? "Login" : "Register"}</button>
-        <span>
-          {mode === "login"
-            ? "Don't have an account? "
-            : "Already have an account? "}
-          <Link
-            to={mode === "login" ? "/auth?mode=register" : "/auth?mode=login"}
-          >
-            {mode === "login" ? "Register" : "Login"}
-          </Link>
-        </span>
-      </form>
+          {mode === "register" && (
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              ref={confirmPasswordRef}
+              placeholder="Confirm Password"
+              title="Enter you Password"
+              required
+            />
+          )}
+          <button type="submit">
+            {mode === "login" ? "Login" : "Register"}
+          </button>
+          <span>
+            {mode === "login"
+              ? "Don't have an account? "
+              : "Already have an account? "}
+            <Link
+              to={mode === "login" ? "/auth?mode=register" : "/auth?mode=login"}
+            >
+              {mode === "login" ? "Register" : "Login"}
+            </Link>
+          </span>
+        </form>
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import AddContact from "./pages/AddContact";
 import socket from "./socket";
 import { userActions } from "./store/user";
+import Stats from "./pages/Stats";
 
 let router;
 
@@ -69,6 +70,14 @@ const App = () => {
           element: (
             <ProtectedRoute>
               <AddContact />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/stats",
+          element: (
+            <ProtectedRoute>
+              <Stats />
             </ProtectedRoute>
           ),
         },

@@ -1,16 +1,119 @@
-.form-container {
+@keyframes fieldAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.form-container form input {
+  animation: fieldAppear 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.typewriter {
+  animation: fadeIn 2s ease-in-out;
+}
+
+.welcome-container h1,
+.welcome-container p {
+  animation: slideIn 1s ease-in-out;
+}
+
+.form-heading {
+  animation: fadeIn 2s ease-in-out;
+}
+
+.form-container form {
+  animation: slideIn 1s ease-in-out;
+}
+
+.main-container-auth-page {
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 0 auto;
-  width: 30%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  justify-content: space-between;
+  padding: 2rem;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.3)
+    ),
+    url("https://media.wired.com/photos/6414bc988a80ebacb760001c/master/pass/Best-SMS-Apps-for-Android-Gear-GettyImages-1329185604.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.typewriter {
+  font-size: 2rem;
+  color: #4caf50;
+  font-family: "Josefin Sans", sans-serif;
+  text-align: center;
+  font-weight: 500;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 1rem;
+  width: 50%;
+  height: 50%;
+}
+
+.welcome-container h1 {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.welcome-container p {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
   background-color: #f2f2f2;
   border-radius: 0.4rem;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: all 1s ease-in-out;
+  height: auto;
+}
+
+.form-container form {
+  transition: all 1s ease-in-out;
 }
 
 .form-heading {

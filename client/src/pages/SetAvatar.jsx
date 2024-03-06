@@ -45,10 +45,13 @@ const SetAvatar = () => {
 
   useEffect(() => {
     const fetchAvatars = async () => {
+      if (!getAuthToken()) return;
       try {
         const avatars = await getAvatarRoute(jwtDecode(getAuthToken())._id);
-        for(let i = 0; i < avatars.data.avatars.length; i++) {
-          const buffer = Buffer.from(avatars.data.avatars[i]).toString("base64");
+        for (let i = 0; i < avatars.data.avatars.length; i++) {
+          const buffer = Buffer.from(avatars.data.avatars[i]).toString(
+            "base64"
+          );
           avatars.data.avatars[i] = buffer;
         }
         setAvatars(avatars.data.avatars);
@@ -59,7 +62,6 @@ const SetAvatar = () => {
     };
 
     fetchAvatars();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

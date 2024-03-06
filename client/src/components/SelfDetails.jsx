@@ -30,24 +30,26 @@ const SelfDetails = () => {
       data-testid="loader"
     />
   ) : (
-    <>
-      <div className="self_details__avatar">
-        <img
-          src={
-            userData
-              ? userData.avatarImage
-                ? `data:image/svg+xml;base64,${userData.avatarImage}`
+    userData && (
+      <>
+        <div className="self_details__avatar">
+          <img
+            src={
+              userData
+                ? userData.avatarImage
+                  ? `data:image/svg+xml;base64,${userData.avatarImage}`
+                  : "https://www.gravatar.com/avatar/000?d=mp"
                 : "https://www.gravatar.com/avatar/000?d=mp"
-              : "https://www.gravatar.com/avatar/000?d=mp"
-          }
-          alt="avatar"
-        />
-      </div>
-      <div className="self_details__username">
-        {userData.username || "Username"}
-      </div>
-      <div className="self_details__email">{userData.email || "Email"}</div>
-    </>
+            }
+            alt="avatar"
+          />
+        </div>
+        <div className="self_details__username">
+          {userData.username || "Username"}
+        </div>
+        <div className="self_details__email">{userData.email || "Email"}</div>
+      </>
+    )
   );
 };
 

@@ -57,6 +57,16 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
+              to="/stats"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              Statistics
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/setAvatar"
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
