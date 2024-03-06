@@ -1,14 +1,14 @@
 .main-container {
-    padding: 1%;
-    margin-bottom: 1%;
-    display: grid;
-    height: 100%;
-    border-radius: 0.4rem;
-    grid-template-columns: 30% 30% 30%;
-    grid-template-rows: 50% 50%;
-    justify-content: center;
-    gap: 0.4rem;
-    overflow: auto;
+  padding: 1%;
+  margin-bottom: 1%;
+  display: grid;
+  height: 100%;
+  border-radius: 0.4rem;
+  grid-template-columns: 30% 30% 30%;
+  grid-template-rows: 50% 50%;
+  justify-content: center;
+  gap: 0.4rem;
+  overflow: auto;
 }
 
 .chart-1,
@@ -16,9 +16,10 @@
 .chart-3,
 .chart-4,
 .chart-5,
-.chart-6,
-.chart-7 {
-    background-color: #f5f5f5;
-    box-shadow: 0 0.4rem 1rem grey;
-    border-radius: 0.4rem;
+.chart-6 {
+  background-color: #f5f5f5;
+  box-shadow: 0 0.4rem 1rem grey;
+  border-radius: 0.4rem;
+  padding: 1rem;
+  color: #4acf4a;
 }

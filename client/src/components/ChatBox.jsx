@@ -15,7 +15,6 @@ const ChatBox = () => {
   const userDataLoading = useSelector((state) => state.user.userDataLoading);
   const userData = useSelector((state) => state.user.user);
   const selectedIndex = useSelector((state) => state.user.selectedContactIndex);
-  // const currentChat = useSelector((state) => state.user.currentChat);
 
   return userDataLoading ? (
     <BeatLoader
@@ -28,7 +27,7 @@ const ChatBox = () => {
   ) : (
     <>
       {selectedIndex === undefined ? (
-        <Welcome username={userData.username} />
+        <Welcome username={undefined || userData.username} />
       ) : (
         <ChatContainer currentUser={userData} />
       )}
