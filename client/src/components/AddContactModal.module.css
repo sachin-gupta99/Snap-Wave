@@ -24,6 +24,18 @@
   background-color: antiquewhite;
   z-index: 101;
   transition: all 0.3s ease-in-out;
+  animation: scaleIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.3); /* Start from a smaller size */
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1); /* Scale up to full size */
+    opacity: 1;
+  }
 }
 
 .user-container {
