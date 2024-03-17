@@ -1,9 +1,88 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
-    gap: 1rem;
-    overflow: hidden;
-    background-image: url("https://images.unsplash.com/photo-1557683316-973673baf926");
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+}
+
+.logo {
+  font-size: 2.5rem;
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #f2f2f2;
+}
+
+.main {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.welcome {
+  margin-bottom: 30px;
+}
+
+.features {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feature {
+  flex-basis: calc(33.33% - 20px);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+}
+
+.icon {
+  font-size: 3rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.feature h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.logoutButton {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logoutButton a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.logoutButton:hover {
+  background-color: #3b903ecc;
 }

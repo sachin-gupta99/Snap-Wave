@@ -13,6 +13,7 @@ import AddContact from "./pages/AddContact";
 import socket from "./socket";
 import { userActions } from "./store/user";
 import Stats from "./pages/Stats";
+import LayoutContainer from "./components/LayoutContainer";
 
 let router;
 
@@ -53,10 +54,18 @@ const App = () => {
       id: "root",
       element: (
         <ProtectedRoute>
-          <Home />
+          <LayoutContainer />
         </ProtectedRoute>
       ),
       children: [
+        {
+          index: true,
+          element: (
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: "/chat",
           element: (
