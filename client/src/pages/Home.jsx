@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Home = () => {
-  const username = useSelector((state) => state.user.user.username);
+  const username = useSelector((state) => state.user.user? state.user.user.username: "Username");
 
   return (
     <div className={styles.container}>
