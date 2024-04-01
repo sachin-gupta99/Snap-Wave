@@ -56,12 +56,6 @@ const ChatInput = ({ onSend }) => {
         >
           <BsEmojiSmile />
         </button>
-        {/* <div
-          className="chat-emoji"
-          onClick={() => setEmojiPicker((prev) => !prev)}
-        > */}
-          {/* <BsEmojiSmile /> */}
-        {/* </div> */}
         <div
           className={cx(
             classes["emoji-palette"],

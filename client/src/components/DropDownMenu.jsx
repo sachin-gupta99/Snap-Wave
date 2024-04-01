@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 import { uiActions } from "../store/ui";
 import { userActions } from "../store/user";
-import { getAuthToken, removeAuthToken, toastOptions } from "../utils/utility";
+import { getAuthToken, removeAuthToken, toastOptions, userAvatar } from "../utils/utility";
 import { getUserRoute } from "../api/userApi";
 import socket from "../socket";
 import { router } from "../App";
@@ -73,22 +73,8 @@ const DropDownMenu = () => {
 
   return (
     <>
-      <div
-        className={classes["menu-trigger"]}
-        onClick={() => {
-          setOpen((prev) => !prev);
-        }}
-      >
-        <img
-          src={
-            userData
-              ? userData.avatarImage
-                ? `data:image/svg+xml;base64,${userData.avatarImage}`
-                : "https://www.gravatar.com/avatar/000?d=mp"
-              : "https://www.gravatar.com/avatar/000?d=mp"
-          }
-          alt="avatar"
-        />
+      <div className={classes["menu-trigger"]} onClick={() => setOpen()}>
+        <img src={userAvatar(userData)} alt="avatar" />
       </div>
 
       <div

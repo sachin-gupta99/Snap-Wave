@@ -20,3 +20,11 @@ export const toastOptions = {
   theme: "dark",
   progress: undefined,
 };
+
+export const userAvatar = (userData) => {
+  return userData
+    ? userData.avatarImage
+      ? `data:image/svg+xml;base64,${userData.avatarImage}`
+      : "https://www.gravatar.com/avatar/000?d=mp"
+    : "https://www.gravatar.com/avatar/000?d=mp";
+};

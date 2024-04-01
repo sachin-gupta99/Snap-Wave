@@ -9,9 +9,6 @@
   }
 }
 
-.form-container form input {
-  animation: fieldAppear 0.5s ease-in-out;
-}
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -30,20 +27,8 @@
   }
 }
 
-.typewriter {
-  animation: fadeIn 2s ease-in-out;
-}
-
 .welcome-container h1,
 .welcome-container p {
-  animation: slideIn 1s ease-in-out;
-}
-
-.form-heading {
-  animation: fadeIn 2s ease-in-out;
-}
-
-.form-container form {
   animation: slideIn 1s ease-in-out;
 }
 
@@ -75,6 +60,7 @@
   font-family: "Josefin Sans", sans-serif;
   text-align: center;
   font-weight: 500;
+  animation: fadeIn 2s ease-in-out;
 }
 
 .welcome-container {
@@ -100,6 +86,10 @@
   margin-bottom: 1rem;
 }
 
+.form-heading {
+  animation: fadeIn 2s ease-in-out;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -114,6 +104,11 @@
 
 .form-container form {
   transition: all 1s ease-in-out;
+  animation: slideIn 1s ease-in-out;
+}
+
+.form-container form input {
+  animation: fieldAppear 0.5s ease-in-out;
 }
 
 .form-heading {

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { BeatLoader } from "react-spinners";
 
 import { userActions } from "../store/user";
+import { userAvatar } from "../utils/utility";
 
 const override = {
   position: "relative",
@@ -33,16 +34,7 @@ const SelfDetails = () => {
     userData && (
       <>
         <div className="self_details__avatar">
-          <img
-            src={
-              userData
-                ? userData.avatarImage
-                  ? `data:image/svg+xml;base64,${userData.avatarImage}`
-                  : "https://www.gravatar.com/avatar/000?d=mp"
-                : "https://www.gravatar.com/avatar/000?d=mp"
-            }
-            alt="avatar"
-          />
+          <img src={userAvatar(userData)} alt="avatar" />
         </div>
         <div className="self_details__username">
           {userData.username || "Username"}
