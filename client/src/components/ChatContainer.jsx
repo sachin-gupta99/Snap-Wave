@@ -116,6 +116,24 @@ const ChatContainer = ({ currentUser }) => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const messagesData =
+    messages.length === 0 ? (
+      <div className={classes["no-messages"]}>No messages</div>
+    ) : (
+      messages.map((msg) => (
+        <div key={uuidv4()} className={classes.message} ref={scrollRef}>
+          <div
+            className={cx(
+              classes["message-content"],
+              classes[`${msg.fromSelf ? "sent" : "receive"}`]
+            )}
+          >
+            {msg.message}
+          </div>
+        </div>
+      ))
+    );
+
   return (
     <div className={classes["chat-container"]}>
       <div className={classes["chat-header"]}>
@@ -153,21 +171,8 @@ const ChatContainer = ({ currentUser }) => {
               />
               <span>Loading your messages...</span>
             </div>
-          ) : messages.length === 0 ? (
-            <div className={classes["no-messages"]}>No messages</div>
           ) : (
-            messages.map((msg) => (
-              <div key={uuidv4()} className={classes.message} ref={scrollRef}>
-                <div
-                  className={cx(
-                    classes["message-content"],
-                    classes[`${msg.fromSelf ? "sent" : "receive"}`]
-                  )}
-                >
-                  {msg.message}
-                </div>
-              </div>
-            ))
+            messagesData
           )}
         </div>
       </div>

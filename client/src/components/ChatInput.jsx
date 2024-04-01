@@ -44,12 +44,24 @@ const ChatInput = ({ onSend }) => {
   return (
     <div className={classes["chat-input-container"]}>
       <div className={classes["emoji-container"]} ref={pickerRef}>
-        <div
+        <button
           className="chat-emoji"
           onClick={() => setEmojiPicker((prev) => !prev)}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+              setEmojiPicker((prev) => !prev);
+            }
+          }}
+          tabIndex={0}
         >
           <BsEmojiSmile />
-        </div>
+        </button>
+        {/* <div
+          className="chat-emoji"
+          onClick={() => setEmojiPicker((prev) => !prev)}
+        > */}
+          {/* <BsEmojiSmile /> */}
+        {/* </div> */}
         <div
           className={cx(
             classes["emoji-palette"],
