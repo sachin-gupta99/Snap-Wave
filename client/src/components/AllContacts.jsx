@@ -5,11 +5,9 @@ import { toast } from "react-toastify";
 
 import Contact from "./Contact";
 import { userActions } from "../store/user";
-import { getUserBasicRoute } from "../api/userApi";
-import { removeAuthToken } from "../utils/utility";
+import { getUserBasicRoute, getContactsRoute } from "../api/userApi";
+import { removeAuthToken, toastOptions } from "../utils/utility";
 import { router } from "../App";
-import { toastOptions } from "../utils/utility";
-import { getContactsRoute } from "../api/userApi";
 
 const override = {
   position: "absolute",
@@ -59,6 +57,21 @@ const AllContacts = () => {
     dispatch(userActions.setSelectedContactIndex(index));
   };
 
+  const contactsData =
+    contacts.length === 0 ? (
+      <div>No contacts found</div>
+    ) : (
+      contacts.map((contact, index) => (
+        <Contact
+          key={contact._id}
+          contact={contact}
+          index={index}
+          className={index === selectedIndex ? "selected" : ""}
+          onClick={handleContactClick}
+        />
+      ))
+    );
+
   return contactLoading ? (
     <div className="loader">
       <BeatLoader
@@ -69,18 +82,8 @@ const AllContacts = () => {
         data-testid="loader"
       />
     </div>
-  ) : contacts.length === 0 ? (
-    <div>No contacts found</div>
   ) : (
-    contacts.map((contact, index) => (
-      <Contact
-        key={contact._id}
-        contact={contact}
-        index={index}
-        className={index === selectedIndex ? "selected" : ""}
-        onClick={handleContactClick}
-      />
-    ))
+    contactsData
   );
 };
 

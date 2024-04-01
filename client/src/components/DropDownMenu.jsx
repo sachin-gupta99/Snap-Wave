@@ -1,22 +1,19 @@
 import React, { useEffect } from "react";
 import cx from "classnames";
-import { CiLogout } from "react-icons/ci";
+import { CiLogout, CiEdit, CiSettings } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import { IoIosHelpCircleOutline } from "react-icons/io";
-import { CiEdit } from "react-icons/ci";
-import { CiSettings } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
 import { uiActions } from "../store/ui";
 import { userActions } from "../store/user";
-import { getAuthToken, removeAuthToken } from "../utils/utility";
+import { getAuthToken, removeAuthToken, toastOptions } from "../utils/utility";
 import { getUserRoute } from "../api/userApi";
 import socket from "../socket";
 import { router } from "../App";
 import { logoutRoute } from "../api/authApi";
-import { toastOptions } from "../utils/utility";
 import classes from "./DropDownMenu.module.css";
 
 const DropDownMenu = () => {
