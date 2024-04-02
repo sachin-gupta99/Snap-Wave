@@ -1,8 +1,10 @@
 import axios from "axios";
 import { getAuthToken } from "../utils/utility";
 
-export const host = "https://snap-wave-server.onrender.com";
-// export const host = "http://localhost:5000";
+export const host =
+  process.env.NODE_ENV === "production"
+    ? "https://snap-wave-server.onrender.com"
+    : "http://localhost:5000";
 
 const axiosInstance = axios.create({
   baseURL: host,
