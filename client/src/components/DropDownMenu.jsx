@@ -9,7 +9,12 @@ import { toast } from "react-toastify";
 
 import { uiActions } from "../store/ui";
 import { userActions } from "../store/user";
-import { getAuthToken, removeAuthToken, toastOptions, userAvatar } from "../utils/utility";
+import {
+  getAuthToken,
+  removeAuthToken,
+  toastOptions,
+  userAvatar,
+} from "../utils/utility";
 import { getUserRoute } from "../api/userApi";
 import socket from "../socket";
 import { router } from "../App";
@@ -73,9 +78,14 @@ const DropDownMenu = () => {
 
   return (
     <>
-    <button className={classes["menu-trigger"]} tabIndex="0" onKeyDown={() => setOpen()} onClick={() => setOpen()}>
-      <img src={userAvatar(userData)} alt="avatar" />
-    </button>
+      <button
+        className={classes["menu-trigger"]}
+        tabIndex="0"
+        onKeyDown={() => setOpen()}
+        onClick={() => setOpen()}
+      >
+        <img src={userAvatar(userData)} alt="avatar" />
+      </button>
 
       <div
         className={cx(
@@ -104,7 +114,12 @@ const DropDownMenu = () => {
 
 const DropdownItem = (props) => {
   return (
-    <li className={classes["dropdownItem"]} onClick={props.onClick}>
+    <li
+      className={classes["dropdownItem"]}
+      onClick={props.onClick}
+      onKeyDown={props.onClick}
+      tabIndex="0"
+    >
       <props.icon />
       <span> {props.text} </span>
     </li>
