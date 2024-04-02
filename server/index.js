@@ -13,7 +13,7 @@ app.disable("x-powered-by");
 
 let corsOptions = {
 
-  origin: ["https://snap-wave.onrender.com/", "http://localhost:3000"],
+  origin: "*",
   credentials: true,
   optionsSuccessStatus: 200,
 };
@@ -47,7 +47,7 @@ start();
 
 const io = socket(server, {
   cors: {
-  origin: ["https://snap-wave.onrender.com/", "http://localhost:3000"],
+  origin: "*",
     credentials: true,
   },
 });
