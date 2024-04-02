@@ -47,7 +47,7 @@ start();
 
 const io = socket(server, {
   cors: {
-  origin: "http://your-specific-domain.com",
+  origin: ["https://snap-wave.onrender.com/", "http://localhost:3000"],
     credentials: true,
   },
 });
