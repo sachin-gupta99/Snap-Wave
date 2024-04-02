@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  gap: 2rem;
+  background-image: url("https://images.unsplash.com/photo-1557683316-973673baf926");
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  gap: 0.5rem;
+}
+
+.not-found-text {
+    display: flex;
+}
+
+.not-found-text h2 {
+  font-size: 2rem;
+  color: #f2f2f2;
+  font-family: "Josefin Sans", sans-serif;
+  text-align: center;
+  font-weight: 500;
+  padding: 0 0.5rem;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.typewriter-text {
+  font-size: 2rem;
+  color: #f2f2f2;
+  font-family: "Josefin Sans", sans-serif;
+  text-align: center;
+  font-weight: 500;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  color: #fff;
+}
+
+.footer button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.footer button:hover {
+  background-color: #256a28;
+}

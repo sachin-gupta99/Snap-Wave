@@ -14,6 +14,7 @@ import socket from "./socket";
 import { userActions } from "./store/user";
 import Stats from "./pages/Stats";
 import LayoutContainer from "./components/LayoutContainer";
+import NotFound from "./pages/NotFound";
 
 let router;
 
@@ -102,7 +103,7 @@ const App = () => {
     },
     {
       path: "*",
-      element: <div>Not Found</div>,
+      element: <NotFound />,
     },
   ]);
 

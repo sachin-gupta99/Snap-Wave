@@ -40,8 +40,6 @@ const AuthPage = () => {
           username: usernameRef.current.value,
           password: passwordRef.current.value,
         };
-        console.log("username", username);
-        console.log("password", password);
         registeredUser = await loginRoute({ username, password });
       } else {
         const { username, email, password } = {
