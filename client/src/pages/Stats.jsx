@@ -51,17 +51,6 @@ const Stats = () => {
               tempMessageCount.push(messageResponse.data.messages.length);
             }
           }
-          // for (let i = 0; i < response.data.contacts.length; i++) {
-          //   const messageResponse = await getMessagesRoute({
-          //     from: userData._id,
-          //     to: response.data.contacts[i]._id,
-          //   });
-          //   if (messageResponse.data.status === "failed") {
-          //     toast.error("Failed to fetch messages", toastOptions);
-          //   } else {
-          //     tempMessageCount.push(messageResponse.data.messages.length);
-          //   }
-          // }
           toast.dismiss(loadingToast);
           setMessageCount(tempMessageCount);
         }
