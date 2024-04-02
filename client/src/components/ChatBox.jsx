@@ -27,7 +27,7 @@ const ChatBox = () => {
   ) : (
     <>
       {selectedIndex === undefined ? (
-        <Welcome username={userData.username} />
+        <Welcome username={userData? userData.username: "Username"} />
       ) : (
         <ChatContainer currentUser={userData} />
       )}
