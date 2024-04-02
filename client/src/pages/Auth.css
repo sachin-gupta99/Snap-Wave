@@ -86,10 +86,6 @@
   margin-bottom: 1rem;
 }
 
-.form-heading {
-  animation: fadeIn 2s ease-in-out;
-}
-
 .form-container {
   display: flex;
   flex-direction: column;
@@ -102,13 +98,13 @@
   height: auto;
 }
 
+
 .form-container form {
   transition: all 1s ease-in-out;
   animation: slideIn 1s ease-in-out;
-}
-
-.form-container form input {
-  animation: fieldAppear 0.5s ease-in-out;
+  input {
+    animation: fieldAppear 0.5s ease-in-out;
+  }
 }
 
 .form-heading {
@@ -118,6 +114,7 @@
   align-items: center;
   width: 60%;
   padding: 5% 0 0 0;
+  animation: fadeIn 2s ease-in-out;
 }
 
 .form-heading img {

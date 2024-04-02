@@ -22,9 +22,10 @@ export const toastOptions = {
 };
 
 export const userAvatar = (userData) => {
-  return userData
+  const avatarImage = userData
     ? userData.avatarImage
       ? `data:image/svg+xml;base64,${userData.avatarImage}`
       : "https://www.gravatar.com/avatar/000?d=mp"
     : "https://www.gravatar.com/avatar/000?d=mp";
+  return avatarImage;
 };

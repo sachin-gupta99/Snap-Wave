@@ -73,9 +73,9 @@ const DropDownMenu = () => {
 
   return (
     <>
-      <div className={classes["menu-trigger"]} onClick={() => setOpen()}>
-        <img src={userAvatar(userData)} alt="avatar" />
-      </div>
+    <div className={classes["menu-trigger"]} role="button" tabIndex="0" onKeyDown={() => setOpen()} onClick={() => setOpen()}>
+      <img src={userAvatar(userData)} alt="avatar" />
+    </div>
 
       <div
         className={cx(

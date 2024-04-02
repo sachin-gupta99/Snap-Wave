@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
-import { Line, Bar, Doughnut } from "react-chartjs-2";
-import { Pie, PolarArea, Radar } from "react-chartjs-2";
+import { Line, Bar, Doughnut, Pie, PolarArea, Radar } from "react-chartjs-2";
+import { CategoryScale } from "chart.js";
+import { toast } from "react-toastify";
 
 import classes from "./Stats.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { CategoryScale } from "chart.js";
 import { userActions } from "../store/user";
 import { getContactsRoute } from "../api/userApi";
 import { getMessagesRoute } from "../api/messageApi";
-import { toast } from "react-toastify";
 import { toastOptions } from "../utils/utility";
-import { useState } from "react";
 
 ChartJS.register(CategoryScale);
 defaults.maintainAspectRatio = false;
@@ -42,10 +40,10 @@ const Stats = () => {
             dispatch(userActions.setUserContacts(response.data.contacts));
           }
           let tempMessageCount = [];
-          for (let i = 0; i < response.data.contacts.length; i++) {
+          for (const contact of response.data.contacts) {
             const messageResponse = await getMessagesRoute({
               from: userData._id,
-              to: response.data.contacts[i]._id,
+              to: contact._id,
             });
             if (messageResponse.data.status === "failed") {
               toast.error("Failed to fetch messages", toastOptions);
@@ -53,6 +51,17 @@ const Stats = () => {
               tempMessageCount.push(messageResponse.data.messages.length);
             }
           }
+          // for (let i = 0; i < response.data.contacts.length; i++) {
+          //   const messageResponse = await getMessagesRoute({
+          //     from: userData._id,
+          //     to: response.data.contacts[i]._id,
+          //   });
+          //   if (messageResponse.data.status === "failed") {
+          //     toast.error("Failed to fetch messages", toastOptions);
+          //   } else {
+          //     tempMessageCount.push(messageResponse.data.messages.length);
+          //   }
+          // }
           toast.dismiss(loadingToast);
           setMessageCount(tempMessageCount);
         }
