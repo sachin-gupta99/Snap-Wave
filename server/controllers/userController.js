@@ -1,13 +1,15 @@
 const User = require("../models/userModel");
 const axios = require("axios");
+const crypto = require("crypto");
 
 exports.getAvatar = async (req, res) => {
   try {
     const AvatarAPI = "https://api.multiavatar.com/";
     const tempAvatars = [];
     for (let i = 0; i < 5; i++) {
+      const randomIndex = crypto.randomInt(1, 1000);
       const image = await axios.get(
-        `${AvatarAPI}${Math.floor(Math.random() * 1000)}?apikey=${
+        `${AvatarAPI}${randomIndex}?apikey=${
           process.env.MULTIAVATAR_API_KEY
         }`
       );
