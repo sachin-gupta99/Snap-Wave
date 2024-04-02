@@ -2,7 +2,8 @@ const jwt = require("jsonwebtoken");
 
 const isAuthenticated = (req, res, next) => {
   const header = req.headers.authorization;
-  const token = header && header.split(' ')[1];
+  const token = header?.split(" ")[1];
+  
   if (!token) {
     return res.json({
       status: "failed",

@@ -6,6 +6,7 @@ import { IoIosHelpCircleOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 
 import { uiActions } from "../store/ui";
 import { userActions } from "../store/user";
@@ -124,6 +125,12 @@ const DropdownItem = (props) => {
       <span> {props.text} </span>
     </li>
   );
+};
+
+DropdownItem.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default DropDownMenu;
